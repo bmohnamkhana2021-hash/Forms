@@ -16,24 +16,25 @@
       padding: 15px 0;
       font-size: 20px;
       font-weight: 600;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      border-bottom: solid 1px gray;
+      box-shadow: 2px 2px 5px  rgba(0,0,0,0.2);
+      border-bottom: solid 1px yellow;
       font-family:Verdana, Geneva, Tahoma, sans-serif;
     }
 
     .container {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr ;
-      grid-gap: 10px;
-      margin-top: 60px;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 50px;
+      margin-top: 40px;
       justify-content: center;
       max-width: 480px;
+      width: 100%;
     }
 
     .icon {
       background: white;
       border-radius: 25px;
-      padding: 10px 10px;
+      padding: 10px 10px ;
       box-shadow: 0 4px 8px rgba(0,0,0,0.15);
       text-align: center;
       transition: all 0.25s ease;
@@ -49,7 +50,7 @@
     .icon-circle {
       width: 70px;
       height: 70px;
-      border-radius: 50%;
+      border-radius: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -61,10 +62,10 @@
 
     /* Unique colors for each icon */
     .ec { background-color: #42a5f5; }
-    .aspirin { background-color: #ef5350; }
+    .aspirin { background-color: lightblue; }
     .ndd { background-color: #ab47bc; }
     .ela { background-color: #26a69a; }
-    .malaria { background-color: #ffa726; }
+    .malaria { background-color: lightcyan; }
     .ncd { background-color: #66bb6a; }
     .phc{ background-color: coral;}
 
@@ -72,6 +73,7 @@
       margin: 5px 0 0;
       font-size: 15px;
       font-weight: 500;
+      gap: 20px;
     }
 
    /* @media (max-width: 480px) {
@@ -81,7 +83,7 @@
       }
     }*/
     footer{
-      position: fixed;
+  position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
