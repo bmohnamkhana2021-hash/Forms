@@ -1,0 +1,103 @@
+ body {
+      margin: 0;
+      font-family: "Poppins", Arial, sans-serif;
+     
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      background-color: lightslategray;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 20px;
+      font-weight: 600;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      border-bottom: solid 1px gray;
+      font-family:Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 130px);
+      grid-gap: 30px;
+      margin-top: 60px;
+      justify-content: center;
+      max-width: 480px;
+    }
+
+    .icon {
+      background: white;
+      border-radius: 25px;
+      padding: 25px 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      text-align: center;
+      transition: all 0.25s ease;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .icon:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    }
+
+    .icon-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 10px;
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    /* Unique colors for each icon */
+    .ec { background-color: #42a5f5; }
+    .aspirin { background-color: #ef5350; }
+    .ndd { background-color: #ab47bc; }
+    .ela { background-color: #26a69a; }
+    .malaria { background-color: #ffa726; }
+    .ncd { background-color: #66bb6a; }
+    .phc{ background-color: coral;}
+
+    .icon p {
+      margin: 5px 0 0;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        grid-template-columns: repeat(2, 120px);
+        grid-gap: 20px;
+      }
+    }
+    footer{
+      position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color:lightblue; /* Example styling */
+  color: grey; /* Example styling */
+  text-align: center;
+  padding: 25px 20px;
+  font-style: italic;
+
+    }
+    body{
+      width: 100%;
+      background-color: grey;
+    }
+    p{
+      font-size: 12px;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      color: darkblue;
+    }

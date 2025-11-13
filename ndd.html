@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NDD</title>
+    <style>
+        body{
+   background-image: linear-gradient(to left, white,white);
+    min-height: 75vh;
+    padding: 45px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    display: flex;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    
+}
+form{
+    max-width: 550px;
+    border: solid 1px grey;
+    border-radius: 25px;
+    box-shadow: 1px 4px 3px black;   
+    padding: 20px 25px;
+    background-image: linear-gradient(to left, white,white);
+}
+input,select {
+border: solid 1px orangered;
+border-radius: 8px;
+padding: 6px 7px ;
+color: black;
+width: 100%;
+box-sizing: border-box;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+font-size: 14px;
+font-weight: bold;
+
+}
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    gap: 20px ;
+}
+.grid1{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px ;
+}
+.group{
+    display: flex;
+    flex-direction: column;
+
+}
+fieldset{
+    margin-top: 10px;
+    border: solid 1px;
+    border-color: salmon;
+    border-radius: 10px;
+    
+    
+}
+legend{
+    color: deeppink;
+    font-size: 16px;
+    margin-top: 10px;
+}
+label{
+    margin-top: 1px;
+    color:maroon;
+    font-size: 14px;
+    margin-bottom: 1px;
+}
+h2,h3{
+    text-align: center;
+    color: coral ;
+}
+button{
+    width: 95%;
+    justify-content: center;
+    align-items: center;
+    margin-left: 11px;
+    margin-top: 10px;
+    padding: 7px 9px 8px;
+    background-color: lightsalmon;
+    border: solid 1px orangered;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+i{
+    font-size: 11px;
+    color: black;
+}
+#response{
+    font-size: 14px;
+    text-align: center;
+    font-style: italic;
+    background-color: rgb(126, 221, 126);
+    color:rgb(9, 92, 59);
+    transition: color 0.3s ease;  
+
+}
+footer{
+    text-align: center;
+   font-size: 11px;
+   font-style: italic;
+   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+   color: gray;
+}
+input:focus, select:focus {
+    outline: none;
+    border-color: coral;
+    box-shadow: 0 0 4px rgba(255, 127, 80, 0.5);
+}
+button {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+button:hover {
+    background-color: salmon;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+/* === Overlay === */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 220, 200, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* === Message Box === */
+.popup-message {
+    background: rgba(255, 245, 239, 0.7);
+    padding: 20px 30px;
+    border-radius: 12px;
+    font-size: 16px;
+    color: #5a3d2b;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(255, 180, 130, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+.popup-message.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* === Message Variants === */
+.popup-message.info { background: rgba(255, 214, 196, 0.8); color: #5a3d2b; }
+.popup-message.success { background: rgba(255, 228, 204, 0.8); color: #5a3d2b; }
+.popup-message.error { background: rgba(255, 183, 162, 0.85); color: #fff; }
+
+
+    </style>
+</head>
+<body>
+    <form  id="ndd">
+        <h2>National Deworming Day 2025</h2>
+        <h3>Round: November, 2025</h3>
+        <hr> 
+        
+        <fieldset>
+            <legend>General Information</legend>
+        <div class="grid">
+            <div class="group">
+                <label for="gp">GP :</label>
+                <select name="gp" id="gp" required>
+                    <option value="">--Select GP--</option>
+                </select>
+            </div>
+            <div class="group">
+                <label for="ru">Reporting Unit :</label>
+                <select name="ru" id="ru" required>                    
+                </select>
+            </div>
+        </div>
+        </fieldset>
+        <fieldset>
+            <legend>Age group wise - Target & Achievement </legend>
+            <div class="grid">
+            <div class="group">
+                <label for="target1"> Target <br><i> (1-2 years old Children):</i></label>
+                <input type="number" name="target1" id="target1" required>
+            </div>
+            <div class="group">
+                <label for="achieve1">Achievement <br><i> (1-2 years old Children)</i>:</label>
+                <input type="number" name="achieve1" id="achieve1" required>
+            </div>
+             <div class="group">
+                <label for="target2">Target <br> <i> (2-19 years old Children):</i></label>
+                <input type="number" name="target2" id="target2" required>
+            </div>
+            <div class="group">
+                <label for="achieve2">Achievement <br><i>(2-19 years old Children)</i>:</label>
+                <input type="number" name="achieve2" id="achieve2" required>
+            </div>
+        </div>
+        </fieldset>
+        <fieldset>
+            <legend>Cumulative Report</legend>
+            <div class="grid1">
+            <div class="group">
+                <label for="targetTotal">Total Target Children:</label>
+                <input type="number" name="targetTotal" id="targetTotal" readonly>
+            </div>
+            <div class="group">
+                <label for="achieveTotal">Total Achievement :</label>
+                <input type="number" name="achieveTotal" id="achieveTotal" readonly>
+            </div>
+            <div class="group">
+                <label for="achievePercent">% of Achievement :</label>
+                <input type="text" name="achievePercent" id="achievePercent" readonly>
+            </div>
+        </div>        
+        </fieldset>
+        <button type="submit" id="button">Submit Report</button>
+        <p id="response"></p>
+        <footer>@developed by Arthita Roy,EA,Namkhana BPMU</footer>
+    </form>
+    <script >
+        //auto calculate target
+const target1=document.getElementById('target1');
+const target2=document.getElementById('target2');
+const total = document.getElementById('targetTotal');
+function calculateTarget(){
+const targetChild1= parseFloat(target1.value)||0;
+const targetChild2 = parseFloat(target2.value)||0;
+total.value = targetChild1 + targetChild2;
+calculatePercent();
+};
+target1.addEventListener('input',calculateTarget);
+target2.addEventListener('input', calculateTarget);
+
+//auto calculate achievement
+const x = document.getElementById('achieve1');
+const y = document.getElementById('achieve2');
+const z = document.getElementById('achieveTotal');
+
+
+function calculateAchiement(){
+const achieveChild1 = parseFloat(x.value)||0;
+const achieveChild2 = parseFloat(y.value)||0;
+z.value = achieveChild1 + achieveChild2;
+calculatePercent();
+};
+x.addEventListener('input', calculateAchiement);
+y.addEventListener('input', calculateAchiement); 
+
+//calcucalte percentage 
+const a = document.getElementById('targetTotal');
+const b = document.getElementById('achieveTotal');
+const c = document.getElementById('achievePercent');
+
+function calculatePercent() {
+  const target = parseFloat(a.value) || 0;
+  const achieved = parseFloat(b.value) || 0;
+
+  if (target > 0) {
+    c.value = ((achieved / target) * 100).toFixed(1)+'%';
+  } else {
+    c.value = "0%";
+  }
+}
+
+a.addEventListener('input', calculatePercent);
+b.addEventListener('input', calculatePercent);
+
+
+//cascade dropdown
+const data={
+    Budhakhali:['Rajnagar Srianthgram I', 'Rajnagar Srianthgram II', 'Budhakhali', 'Bishalaxmipur', 'Fatikpur'],
+    Narayanpur:['Ganeshnagar East', 'Ganeshnagar West', 'Iswaripur', 'Narayanpur Part', 'Narayanpur PHC SC', 'Nandabhanga'],
+    Namkhana:['Namkhana I', 'Namkhana II', 'Shibanagar Abad I', 'Shibnagar Abad II', 'Debnagar', 'Dwariknagar'],
+    Haripur:['Uttar Chandanpiri','Dakshin Chandanpiri','Dakshin Chandranagar','Haripur','Maharajganj'],
+    Shibrampur:['Rajnagar','Radhanagar','Uttar Shibrampur','Dakshin Shibrampur','Dakshin Durgapur','Patibunia'],
+    Moushuni:['Moushuni 1st Gheri','Bagdanga','Kusumtala','Baliara New','Baliara Old'],
+    Freserganj:['Amarabati','Bijoybati','Shibpur','Debnibas']
+};
+const gp=document.getElementById('gp');
+const ru=document.getElementById('ru');
+
+Object.keys(data).forEach(function(gpList){
+    const option = document.createElement('option');
+    option.value=gpList;
+    option.textContent=gpList;
+    gp.appendChild(option);
+});
+gp.addEventListener('change', function(x){
+    ru.innerHTML='<option value="">--Select reporting Unit--</option>';
+    const gpvalue=this.value;
+    if(!gpvalue){
+        ru.diabled=true;
+        return;    
+    }
+    const reportingUnit=data[gpvalue];
+    reportingUnit.forEach(function(z){
+        const option = document.createElement('option');
+        option.value=z;
+        option.textContent=z;
+        ru.appendChild(option);
+    })
+ru.diabled=false;
+});
+
+//Submit data to google sheet
+document.getElementById("ndd").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    
+   
+    showMessage("⏳ Submitting your report...", "info");
+
+    const formData = new FormData(event.target);
+    const url = "https://script.google.com/macros/s/AKfycbws3DMWd0ZgnOOYpgZduccMzt0zWzjLZl4ssvBZ6TAcv3tYmOqt8EnZEHU_IAlureOq/exec";
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            showMessage("✅ Submitted successfully!", "success");
+            event.target.reset();
+            
+        } else {
+            throw new Error("Server responded with an error");
+        }
+    } catch (error) {
+        showMessage("❌ Submission failed! Please try again.", "error");
+        console.error("Submission error:", error);
+    }
+});
+
+
+// ✅ Modern centered message popup with overlay
+function showMessage(message, type = "info") {
+    // Create overlay
+    let overlay = document.createElement("div");
+    overlay.className = "popup-overlay";
+
+    // Create message box
+    let msgBox = document.createElement("div");
+    msgBox.textContent = message;
+    msgBox.className = `popup-message ${type}`;
+
+    // Add overlay and message box to body
+    overlay.appendChild(msgBox);
+    document.body.appendChild(overlay);
+
+    // Fade-in
+    setTimeout(() => {
+        overlay.classList.add("show");
+        msgBox.classList.add("show");
+    }, 10);
+
+    // Auto remove after 3s
+    setTimeout(() => {
+        msgBox.classList.remove("show");
+        overlay.classList.remove("show");
+        setTimeout(() => overlay.remove(), 500);
+    }, 3000);
+    
+};
+
+
+    </script>
+</body>
+
+</html>
