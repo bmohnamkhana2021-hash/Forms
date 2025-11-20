@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vaccination Coverage Form</title>
+
+<style>
+    body {
+        font-family: "Inter", Arial, sans-serif;
+        background: #f3f4f7;
+        margin: 0;
+        padding: 40px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-container {
+        max-width: 780px;
+        margin: auto;
+        background: #fff;
+        padding: 25px 35px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .top-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .vaccine-card {
+        background: #fafafa;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #e6e6e6;
+        transition: 0.2s ease-in-out;
+    }
+
+    .vaccine-card:hover {
+        background: #f0f8ff;
+        border-color: #b4d4ff;
+    }
+
+    .vaccine-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #222;
+        text-align: center;
+    }
+
+    label {
+        font-size: 13px;
+        color: #555;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 7px 10px;
+        margin-top: 3px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        box-sizing: border-box;
+        transition: border 0.2s;
+    }
+
+    input:focus {
+        border-color: #4a90e2;
+        outline: none;
+        box-shadow: 0 0 5px rgba(74,144,226,0.3);
+    }
+
+    button {
+        display: block;
+        margin: 30px auto 0;
+        padding: 12px 30px;
+        font-size: 16px;
+        background: #4a90e2;
+        border: none;
+        color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        
+    }
+
+    button:hover {
+        background: #3b7ac4;
+    }
+    /* === Overlay === */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 220, 200, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* === Message Box === */
+.popup-message {
+    background:white;
+    padding: 20px 30px;
+    border-left: solid 6px green;
+    border-radius: 12px;
+    font-size: 16px;
+    color: white;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 4px 20px gray;
+    backdrop-filter: blur(10px);
+}
+
+.popup-message.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* === Message Variants === */
+.popup-message.info { background: white; color: black; }
+.popup-message.success { background: white; color: green; }
+.popup-message.error { background:white; color: maroon; }
+
+
+</style>
+</head>
+
+<body>
+
+<h1>Vaccination Coverage Form</h1>
+
+<div class="form-container">
+<form id="ri">
+
+    <!-- CCP + FACILITY -->
+    <div class="top-grid">
+        <div>
+            <label for="ccp">CCP</label>
+            <select name="ccp" id="ccp" required>
+                <option value="">--Select CCP--</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="facility">Facility</label>
+            <select name="facility" id="facility" required>
+                <option value="">--Select Facility--</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- DATE -->
+    <div>
+        <label for="session">Date of Session</label>
+        <input type="date" name="session" id="session" required>
+    </div>
+
+    <!-- VACCINES GRID -->
+    <div class="grid">
+        <!-- TEMPLATE: Use same block for all vaccines -->
+        <!-- Penta 1 -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">Penta 1</div>
+            <label>Target</label>
+            <input type="number" name="penta1_target">
+            <label>Vaccinated</label>
+            <input type="number" name="penta1_vaccinated">
+        </div>
+
+        <!-- BCG -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">BCG</div>
+            <label>Target</label>
+            <input type="number" name="bcg_target">
+            <label>Vaccinated</label>
+            <input type="number" name="bcg_vaccinated">
+        </div>
+
+        <!-- Penta 2 -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">Penta 2</div>
+            <label>Target</label>
+            <input type="number" name="penta2_target">
+            <label>Vaccinated</label>
+            <input type="number" name="penta2_vaccinated">
+        </div>
+
+        <!-- Penta 3 -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">Penta 3</div>
+            <label>Target</label>
+            <input type="number" name="penta3_target">
+            <label>Vaccinated</label>
+            <input type="number" name="penta3_vaccinated">
+        </div>
+
+        <!-- OPV Series -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">OPV 0</div>
+            <label>Target</label>
+            <input type="number" name="opv0_target">
+            <label>Vaccinated</label>
+            <input type="number" name="opv0_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">OPV 1</div>
+            <label>Target</label>
+            <input type="number" name="opv1_target">
+            <label>Vaccinated</label>
+            <input type="number" name="opv1_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">OPV 2</div>
+            <label>Target</label>
+            <input type="number" name="opv2_target">
+            <label>Vaccinated</label>
+            <input type="number" name="opv2_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">OPV 3</div>
+            <label>Target</label>
+            <input type="number" name="opv3_target">
+            <label>Vaccinated</label>
+            <input type="number" name="opv3_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">OPV Booster</div>
+            <label>Target</label>
+            <input type="number" name="opv_booster_target">
+            <label>Vaccinated</label>
+            <input type="number" name="opv_booster_vaccinated">
+        </div>
+
+        <!-- RVV -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">RVV 1</div>
+            <label>Target</label>
+            <input type="number" name="rvv1_target">
+            <label>Vaccinated</label>
+            <input type="number" name="rvv1_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">RVV 2</div>
+            <label>Target</label>
+            <input type="number" name="rvv2_target">
+            <label>Vaccinated</label>
+            <input type="number" name="rvv2_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">RVV 3</div>
+            <label>Target</label>
+            <input type="number" name="rvv3_target">
+            <label>Vaccinated</label>
+            <input type="number" name="rvv3_vaccinated">
+        </div>
+
+        <!-- fIPV -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">fIPV 1</div>
+            <label>Target</label>
+            <input type="number" name="fipv1_target">
+            <label>Vaccinated</label>
+            <input type="number" name="fipv1_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">fIPV 2</div>
+            <label>Target</label>
+            <input type="number" name="fipv2_target">
+            <label>Vaccinated</label>
+            <input type="number" name="fipv2_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">fIPV 3</div>
+            <label>Target</label>
+            <input type="number" name="fipv3_target">
+            <label>Vaccinated</label>
+            <input type="number" name="fipv3_vaccinated">
+        </div>
+
+        <!-- PCV -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">PCV 1</div>
+            <label>Target</label>
+            <input type="number" name="pcv1_target">
+            <label>Vaccinated</label>
+            <input type="number" name="pcv1_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">PCV 2</div>
+            <label>Target</label>
+            <input type="number" name="pcv2_target">
+            <label>Vaccinated</label>
+            <input type="number" name="pcv2_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">PCV Booster</div>
+            <label>Target</label>
+            <input type="number" name="pcv_booster_target">
+            <label>Vaccinated</label>
+            <input type="number" name="pcv_booster_vaccinated">
+        </div>
+
+        <!-- MR -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">MR 1</div>
+            <label>Target</label>
+            <input type="number" name="mr1_target">
+            <label>Vaccinated</label>
+            <input type="number" name="mr1_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">MR 2</div>
+            <label>Target</label>
+            <input type="number" name="mr2_target">
+            <label>Vaccinated</label>
+            <input type="number" name="mr2_vaccinated">
+        </div>
+
+        <!-- JE -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">JE 1</div>
+            <label>Target</label>
+            <input type="number" name="je1_target">
+            <label>Vaccinated</label>
+            <input type="number" name="je1_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">JE 2</div>
+            <label>Target</label>
+            <input type="number" name="je2_target">
+            <label>Vaccinated</label>
+            <input type="number" name="je2_vaccinated">
+        </div>
+
+        <!-- DPT -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">DPT 1</div>
+            <label>Target</label>
+            <input type="number" name="dpt1_target">
+            <label>Vaccinated</label>
+            <input type="number" name="dpt1_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">DPT 2</div>
+            <label>Target</label>
+            <input type="number" name="dpt2_target">
+            <label>Vaccinated</label>
+            <input type="number" name="dpt2_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">DPT 3</div>
+            <label>Target</label>
+            <input type="number" name="dpt3_target">
+            <label>Vaccinated</label>
+            <input type="number" name="dpt3_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">DPT (B1)</div>
+            <label>Target</label>
+            <input type="number" name="dptb1_target">
+            <label>Vaccinated</label>
+            <input type="number" name="dptb1_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">DPT (B2)</div>
+            <label>Target</label>
+            <input type="number" name="dptb2_target">
+            <label>Vaccinated</label>
+            <input type="number" name="dptb2_vaccinated">
+        </div>
+
+        <!-- TD -->
+        <div class="vaccine-card">
+            <div class="vaccine-title">TD 10</div>
+            <label>Target</label>
+            <input type="number" name="td10_target">
+            <label>Vaccinated</label>
+            <input type="number" name="td10_vaccinated">
+        </div>
+
+        <div class="vaccine-card">
+            <div class="vaccine-title">TD 16</div>
+            <label>Target</label>
+            <input type="number" name="td16_target">
+            <label>Vaccinated</label>
+            <input type="number" name="td16_vaccinated">
+        </div>
+    </div>
+
+    <button type="submit">Submit</button>
+
+</form>
+</div>
+
+<script src="ri.js"></script>
+
+</body>
+</html>
