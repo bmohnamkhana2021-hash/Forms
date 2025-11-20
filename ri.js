@@ -56,9 +56,8 @@ document.getElementById("ri").addEventListener("submit", async function(event) {
     }
 });
 
-
 // ✅ Modern centered message popup with overlay
-function showMessage(message, type = "info") {
+function showMessage(message, type = "info", redirectUrl = 'index.html') {
     // Create overlay
     let overlay = document.createElement("div");
     overlay.className = "popup-overlay";
@@ -77,13 +76,15 @@ function showMessage(message, type = "info") {
         overlay.classList.add("show");
         msgBox.classList.add("show");
     }, 10);
-
-    // Auto remove after 3s
+   // Auto remove after 3s
     setTimeout(() => {
         msgBox.classList.remove("show");
         overlay.classList.remove("show");
-        setTimeout(() => overlay.remove(), 500);
-    }, 3000);
-    
+        setTimeout(() => {
+            overlay.remove();
+            // 👇 Redirect to index.html after popup disappears
+            if (redirectUrl) window.location.href = redirectUrl;
+        }, 500);
+    }, 6000);
 };
 
