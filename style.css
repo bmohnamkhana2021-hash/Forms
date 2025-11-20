@@ -89,7 +89,7 @@ header:hover {
 .malaria { background: linear-gradient(135deg, #b2ebf2, #80deea); color: #004d40; }
 .ncd { background: linear-gradient(135deg, #66bb6a, #43a047); }
 .phc { background: linear-gradient(135deg, coral, #ff7043); }
-.ri { background: linear-gradient(135deg, coral, #d8ab9d); }
+.ri { background: linear-gradient(135deg, rgb(213, 152, 130), #d8ab9d); }
 
 /* ====== TEXT UNDER ICON ====== */
 .icon p {
