@@ -90,6 +90,7 @@ header:hover {
 .ncd { background: linear-gradient(135deg, #66bb6a, #43a047); }
 .phc { background: linear-gradient(135deg, coral, #ff7043); }
 .ri { background: linear-gradient(135deg, rgb(213, 152, 130), #d8ab9d); }
+.vitA { background: linear-gradient(135deg, lightcyan, #d8ab9d); }
 
 /* ====== TEXT UNDER ICON ====== */
 .icon p {

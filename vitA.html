@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitamin A Oil</title>
+   <style>
+    body{
+    padding: 20px;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    display: flex;
+
+}
+form{
+    background-color: white;
+    border: solid 10px white;
+    border-radius: 20px;
+    max-width: 550px;
+    width: 100%;
+    box-shadow: 2px 2px 3px 2px gray;
+    padding: 25px 20px;
+  
+}
+input,select{
+    padding: 8px 7px;
+    border-left: solid 6px teal;
+    border-radius: 8px;
+    box-sizing: border-box;
+    width: 100%;
+
+}
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;   
+    font-family: "Kalpurush";
+    font-size: 14px;   
+}
+.group{
+    display: flex;
+    flex-direction: column;
+}
+.grid1{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    font-family: "Kalpurush";
+    font-size: 14px;
+}
+
+fieldset{
+    box-sizing: border-box;
+    width: 100%;
+    border: solid 1px coral;
+    border-radius: 10px;
+    margin-top: 8px;
+
+}
+
+
+h3,h4{
+    text-align: center;
+    color: darkorchid;
+    font-weight: bold;
+    gap: 1px;
+}
+label{
+    margin-top: 8px;
+}
+button{
+    padding: 10px 8px;
+    width: 100%;
+    border: solid 1px darkslateblue;
+    border-radius: 8px;
+    margin-top: 10px;
+    background-color: lightcyan;
+    font-weight: bold;
+     box-shadow: 0 5px #999; /* Initial shadow */
+    transition: all 0.2s ease; /* Smooth transition for changes */
+}
+button:hover{
+    background-color: cyan;
+    cursor: pointer;    
+}
+button:active{
+     box-shadow: 0 2px #666; /* Reduced shadow */
+      transform: translateY(3px); /* Move down slightly */
+}
+footer{
+    text-align: center;
+    margin-top: 20px;
+    color: grey;
+}
+#round,#totalTarget,#totalSup,#percentage{
+    border-left: solid 5px green;
+    background-color: lightblue;
+   
+}
+
+/* === Overlay === */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 220, 200, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* === Message Box === */
+.popup-message {
+    background: rgba(255, 245, 239, 0.7);
+    padding: 20px 30px;
+    border-radius: 12px;
+    font-size: 16px;
+    color: #5a3d2b;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 4px 20px grey;
+    backdrop-filter: blur(20px);
+    border-left: solid 8px teal;
+}
+
+.popup-message.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* === Message Variants === */
+.popup-message.info { background: white; color: black; }
+.popup-message.success { background: white; color: green; }
+.popup-message.error { background: white; color: red; }
+</style>
+</head>
+<body>
+    <form action="" id="vitA">
+        <h3>Bi Annual Vitamin A Oil Administration</h3>
+        <h4>Namkhana Block, Diamond Harbour HD</h4>
+        <hr>
+        <fieldset>
+            <legend>General Information</legend>
+        <div class="grid">
+            <div class="group">
+                <label for="">বছর :</label>
+                <select name="year" id="year" required>
+                    <option value="">--Select Year--</option>
+                    
+                </select>
+            </div>
+            <div class="group">
+                <label for="">মাস :</label>
+                <select name="month" id="month" required>
+                    <option value="">--Select Month--</option>                    
+                </select>
+            </div> 
+             <div class="group">
+                <label for="">রাউন্ড :</label>
+                <input type="text" id="round" name="round" readonly>
+            </div>            
+        </div>
+        <div class="grid1">
+        <div class="group">
+                <label for="">গ্রাম পঞ্চায়েত :</label>
+                <select name="gp" id="gp" required>
+                    <option value="">--Select GP--</option>
+                </select>
+            </div>
+            <div class="group">
+                <label for="">সুস্বাস্থ্য/উপস্বাস্থ্য কেন্দ্র :</label>
+                <select name="ru" id="ru" required>                    
+                </select>
+            </div> 
+            </div>   
+        </fieldset>
+        <fieldset>
+            <legend>Age group wise report</legend>
+            <div class="grid1">
+                <div class="group">                   
+                <label for="">যোগ্য শিশুর সংখ্যা <br>(৯ মাস - ১২ মাস)</label>
+                <input type="number" id="target1" name="target1" >
+            </div>  
+            <div class="group">                   
+                <label for="">কতজন ভিটামিন A Oil খেয়েছে <br>(৯ মাস - ১২ মাস)</label>
+                <input type="number" id="sup1" name="sup1" >
+            </div>
+            <div class="group">                   
+                <label for="">যোগ্য শিশুর সংখ্যা <br>(১২ মাস - ২৪ মাস)</label>
+                <input type="number" id="target2" name="target2" >
+            </div>  
+            <div class="group">                   
+                <label for="">কতজন ভিটামিন A Oil খেয়েছে <br>(১২ মাস - ২৪ মাস)</label>
+                <input type="number" id="sup2" name="sup2" >
+            </div>
+            <div class="group">                   
+                <label for="">যোগ্য শিশুর সংখ্যা <br>(২৪ মাস - ৩৬ মাস)</label>
+                <input type="number" id="target3" name="target3" >
+            </div>  
+            <div class="group">                   
+                <label for="">কতজন ভিটামিন A Oil খেয়েছে <br>(২৪ মাস - ৩৬ মাস)</label>
+                <input type="number" id="sup3" name="sup3" >
+            </div>
+             <div class="group">                   
+                <label for="">যোগ্য শিশুর সংখ্যা <br>(৩৬ মাস - ৬০ মাস)</label>
+                <input type="number" id="target4" name="target4" >
+            </div>  
+            <div class="group">                   
+                <label for="">কতজন ভিটামিন A Oil খেয়েছে <br>(৩৬ মাস - ৬০ মাস)</label>
+                <input type="number" id="sup4" name="sup4" >
+            </div>
+            </div>         
+        </fieldset>
+        <fieldset>
+            <legend>Cumulative Report</legend>
+            <div class="grid">
+                <div class="group">
+                    <label for="">মোট যোগ্যশিশুর <br>সংখ্যা</label>
+                    <input type="number" id="totalTarget" name="totalTarget" readonly>
+                </div>
+                <div class="group">
+                    <label for="">মোট কতজন শিশু ভিটামিন A Oil খেয়েছে</label>
+                    <input type="number" id="totalSup" name="totalSup" readonly>
+                </div>
+                <div class="group">
+                    <label for=""> % শিশু ভিটামিন A Oil খেয়েছে</label>
+                    <input type="number" id="percentage" name="percentage" readonly>
+                </div>
+            </div>
+        </fieldset>
+        <button id="btn">Submit</button>
+        <footer>@copyright Arthita Roy, Executive Assistant</footer>
+    </form>
+    <script>
+        const year = [2025,2026,2027,2028,2029];
+const listYear=document.getElementById('year');
+const month = ['June', 'December'];
+const listMonth=document.getElementById('month');
+
+for (let i = 0; i < year.length; i++) {
+    const option = document.createElement("option");
+    option.value=year[i];
+    option.innerHTML=year[i];
+    listYear.appendChild(option);    
+}
+
+for (let i = 0; i < month.length; i++) {
+    const option = document.createElement("option");
+    option.value=month[i];
+    option.innerHTML=month[i];
+    listMonth.appendChild(option);    
+}
+function round(){
+const round=document.getElementById('round');
+round.value = listMonth.value +"," + listYear.value;
+}
+listMonth.addEventListener("input",round);
+
+const data={
+    Budhakhali:['Rajnagar Srianthgram I', 'Rajnagar Srianthgram II', 'Budhakhali', 'Bishalaxmipur', 'Fatikpur'],
+    Narayanpur:['Ganeshnagar East', 'Ganeshnagar West', 'Iswaripur', 'Narayanpur Part', 'Narayanpur PHC SC', 'Nandabhanga'],
+    Namkhana:['Namkhana I', 'Namkhana II', 'Shibanagar Abad I', 'Shibnagar Abad II', 'Debnagar', 'Dwariknagar'],
+    Haripur:['Uttar Chandanpiri','Dakshin Chandanpiri','Dakshin Chandranagar','Haripur','Maharajganj'],
+    Shibrampur:['Rajnagar','Radhanagar','Uttar Shibrampur','Dakshin Shibrampur','Dakshin Durgapur','Patibunia'],
+    Moushuni:['Moushuni 1st Gheri','Bagdanga','Kusumtala','Baliara New','Baliara Old'],
+    Freserganj:['Amarabati','Bijoybati','Shibpur','Debnibas']
+};
+const gp=document.getElementById('gp');
+const ru=document.getElementById('ru');
+
+Object.keys(data).forEach(function(gpList){
+    const option = document.createElement('option');
+    option.value=gpList;
+    option.textContent=gpList;
+    gp.appendChild(option);
+});
+gp.addEventListener('change', function(x){
+    ru.innerHTML='<option value="">--Select reporting Unit--</option>';
+    const gpvalue=this.value;
+    if(!gpvalue){
+        ru.diabled=true;
+        return;    
+    }
+    const reportingUnit=data[gpvalue];
+    reportingUnit.forEach(function(z){
+        const option = document.createElement('option');
+        option.value=z;
+        option.textContent=z;
+        ru.appendChild(option);
+    })
+ru.diabled=false;
+});
+
+
+
+   
+function calcTotal(idList, output) {
+    let total = 0;
+    idList.forEach(id => {
+        total += parseFloat(document.getElementById(id).value) || 0;
+    });
+    document.getElementById(output).value = total;
+    return total;
+}
+
+function calculateAll() {
+    const totalTarget = calcTotal(["target1","target2","target3","target4"], "totalTarget");
+    const totalSup = calcTotal(["sup1","sup2","sup3","sup4"], "totalSup");
+
+    const percentage = document.getElementById("percentage");
+
+    if (totalTarget === 0) {
+        percentage.value = 0;
+    } else {
+        percentage.value = ((totalSup / totalTarget) * 100).toFixed(2);
+    }
+}
+
+["target1","target2","target3","target4","sup1","sup2","sup3","sup4"]
+.forEach(id => {
+    document.getElementById(id).addEventListener("input", calculateAll);
+});
+
+
+//Submit data to google sheet
+document.getElementById("vitA").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    
+   
+    showMessage("⏳ Submitting your report...", "info");
+
+    const formData = new FormData(event.target);
+    const url = "https://script.google.com/macros/s/AKfycbwytSF2YM74TnFMOmvuZ4PAQBCpdU2xLawDI0gomDTeesGVWthzHooLA1VzLlTQv4HK/exec";
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            showMessage("✅ Submitted successfully!", "success");
+            event.target.reset();
+            
+        } else {
+            throw new Error("Server responded with an error");
+        }
+    } catch (error) {
+        showMessage("❌ Submission failed! Please try again.", "error");
+        console.error("Submission error:", error);
+    }
+});
+
+
+// ✅ Modern centered message popup with overlay
+function showMessage(message, type = "info") {
+    // Create overlay
+    let overlay = document.createElement("div");
+    overlay.className = "popup-overlay";
+
+    // Create message box
+    let msgBox = document.createElement("div");
+    msgBox.textContent = message;
+    msgBox.className = `popup-message ${type}`;
+
+    // Add overlay and message box to body
+    overlay.appendChild(msgBox);
+    document.body.appendChild(overlay);
+
+    // Fade-in
+    setTimeout(() => {
+        overlay.classList.add("show");
+        msgBox.classList.add("show");
+    }, 10);
+
+    // Auto remove after 3s
+    setTimeout(() => {
+        msgBox.classList.remove("show");
+        overlay.classList.remove("show");
+        setTimeout(() => overlay.remove(), 500);
+    }, 3000);
+    
+};
+</script>
+</body>
+</html>
