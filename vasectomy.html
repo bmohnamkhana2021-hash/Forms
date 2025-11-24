@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vasectomy</title>   
+    <style>
+  /* --- FUTURISTIC STYLING --- */
+        :root {
+            --color-primary: #00e0ff; /* Neon blue/cyan */
+            --color-secondary: #ff00e0; /* Neon pink/magenta */
+            --color-background: #121212; /* Deep dark gray */
+            --color-surface: #1e1e1e; /* Slightly lighter surface */
+            --color-text: #e0e0e0;
+            --color-border: #333;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        form {
+            width: 100%;
+            max-width: 650px;
+            padding: 40px;
+            background-color: var(--color-surface);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 224, 255, 0.15); /* Soft neon glow */
+            border: 1px solid var(--color-border);
+        }
+
+        h3 {
+            color: var(--color-primary);
+            text-align: center;
+            font-size: 2em;
+            letter-spacing: 1.5px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 10px;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: var(--color-border);
+            margin: 15px 0;
+        }
+
+        /* --- FIELDSET/LEGEND STYLING --- */
+        fieldset {
+            border: 1px solid var(--color-border);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        fieldset:hover {
+            border-color: var(--color-primary);
+        }
+
+        legend {
+            color: var(--color-secondary);
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- INPUT / SELECT / GROUP STYLING --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: var(--color-text);
+            transition: color 0.3s;
+        }
+
+        input[type="text"], 
+        input[type="number"], 
+        select {
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            background-color: #2a2a2a;
+            color: var(--color-text);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            appearance: none; /* For select/dropdown consistency */
+        }
+
+        input:focus, 
+        select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 5px rgba(0, 224, 255, 0.5);
+            background-color: #333333;
+        }
+
+        /* --- RADIO BUTTONS --- */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-top: 10px;
+        }
+        
+        .radio-options {
+            display: flex;
+            gap: 30px;
+        }
+
+        .radio {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio input[type="radio"] {
+            /* Hide default radio */
+            display: none;
+        }
+
+        .radio label {
+            cursor: pointer;
+            padding: 5px 15px 5px 25px;
+            position: relative;
+            margin-bottom: 0;
+            margin-left: 12px;
+            color: var(--color-text);
+        }
+
+        .radio label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--color-primary);
+            border-radius: 50%;
+            background-color: var(--color-surface);
+            transition: all 0.2s;
+        }
+
+        .radio input[type="radio"]:checked + label::before {
+            background-color: var(--color-primary);
+            box-shadow: 0 0 5px var(--color-primary);
+        }
+
+        .radio input[type="radio"]:checked + label {
+            color: var(--color-primary);
+        }
+
+        /* --- BUTTON STYLING --- */
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            background-color: var(--color-primary);
+            color: var(--color-surface);
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        button:hover {
+            background-color: #00c0e0;
+            box-shadow: 0 0 15px var(--color-primary);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* --- Condom Distribution Label --- */
+        .dist-label {
+            display: block;
+            margin: 25px 0 15px;
+            font-size: 1.1em;
+            color: var(--color-secondary);
+            font-weight: bold;
+        }
+        /* === Overlay === */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 220, 200, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* === Message Box === */
+.popup-message {
+    background: rgba(255, 245, 239, 0.7);
+    padding: 20px 30px;
+    border-radius: 12px;
+    border-left: solid 6px var(--color-primary);
+    font-size: 16px;
+    color: #5a3d2b;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(255, 180, 130, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+.popup-message.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* === Message Variants === */
+.popup-message.info { background: darkgray; color: blue; }
+.popup-message.success { background:darkgray; color:darkgreen; }
+.popup-message.error { background:darkgray; color: red; }
+
+    </style>
+</head>
+<body>
+    <form action="" id="vasectomy">
+        <h3>Report on Vasectomy Fortnight</h3>
+        <hr>
+        <fieldset>
+            <legend>General Information</legend>
+        <div class="grid">
+            <div class="group">
+                <label for="">Phase:</label>
+                <select name="phase" id="phase" required>
+                    <option value="">--Select Phase--</option>
+                    <option value="Preparation & Mobilisation Phase">Preparation & Mobilisation Phase</option>
+                    <option value="Service Delivery Phase">Service Delivery Phase</option>
+                </select>
+            </div>
+            <div class="group">
+                <label for="">Period:</label>
+                <input type="text" id="period" name="period"  readonly>
+            </div>
+            <div class="group">
+                <label for="">Facility Type:</label>
+                <select name="type" id="type" required> 
+                    <option value="">--Select facility type--</option>                   
+                </select>
+            </div>
+            <div class="group">
+                <label for="">Reporting Unit:</label>
+                <select name="ru" id="ru" required>                    
+                </select>
+            </div>
+        </div>
+        </fieldset>
+        <fieldset>
+            <legend>Report</legend> 
+           
+               <div class="radio">
+                     <p>Condom Box Installed?</p>       
+                    <input type="radio" name="box" id="yes" value="yes" required>
+                    <label for="yes">Yes</label>
+                    <input type="radio" name="box" value="no" id="no">
+                    <label for="no">No</label>
+              </div>
+              <br>      
+
+                
+              
+            <div class="grid"></div>            
+                    <label for="">Number of Condom pieces distributed :-</label>
+                    <hr>
+                    <div class="grid">
+                    <div class="group">
+                        <label for="">ASHA</label>
+                        <input type="number" id="asha" name="asha" required>
+                    </div>
+                    <div class="group">
+                        <label for="">Facility:</label>
+                        <input type="number" id="facility" name="facility" required>
+                    </div>    
+                    <div class="group">
+                        <label for="">Condom Box:</label>
+                        <input type="number" id="ccBox" name="ccBox" required>
+                    </div>  
+                     <div class="group">
+                        <label for="">Outreach:</label>
+                        <input type="number" id="outreach" name="outreach" required>
+                    </div>                           
+
+            </div>
+        </fieldset>
+        <button>Submit Report</button>
+    </form>
+    <script>
+        const data = {
+      CHC: ['Dwariknagar RH'],
+      PHC: ['Narayanpur PHC', 'Maharajganj PHC', 'Freserganj PHC', 'Bagdanga Moushuni PHC'],
+      SC:["Amarabati","Bagdanga","Baliara New","Baliara Old","Bijoybati","Bishalaxmipur","Budhakhali","Dakshin Chandanpiri","Dakshin Chandranagar","Dakshin Durgapur","Dakshin Shibrampur","Debnagar","Debnibas","Dwariknagar","Fatikpur","Ganeshnagar East","Ganeshnagar West","Haripur","Iswaripur","Kusumtala","Maharajganj","Moushuni 1st Gheri","Namkhana I","Namkhana II","Nandabhanga","Narayanpur PHC SC","Narayanpur Part","Patibunia","Radhanagar","Rajnagar","Rajnagar Srinathgram I","Rajnagar Srinathgram II","Shibnagar Abad I","Shibnagar Abad II","Shibpur","Uttar Chandanpiri","Uttar Shibrampur"]
+    };
+
+   const type =document.getElementById('type');
+   const facility=document.getElementById('ru');
+
+   //auto populate facility drop down
+Object.keys(data).forEach(function(populateType){
+    const g=document.createElement('option');
+    g.value=populateType;
+    g.textContent=populateType;
+    type.appendChild(g);
+});
+type.addEventListener('change',function(){
+    const selectedType=this.value;
+    facility.innerHTML='<option value="">--Select Facility--</option>';
+
+if(selectedType && data[selectedType]){
+    data[selectedType].forEach(function(populateFacility){
+        const h = document.createElement('option');
+        h.value = populateFacility;
+        h.textContent = populateFacility;
+        facility.appendChild(h);
+    });
+}
+});
+
+const x=document.getElementById('phase');
+const y=document.getElementById('period');
+function period(){
+    if(x.value==="Preparation & Mobilisation Phase"){       
+       y.value="21st November to 27th November,2025";      
+    }else{
+        y.value="28th November to 4th December,2025";
+    };}
+x.addEventListener("change",period);
+
+//Submit data to google sheet
+document.getElementById("vasectomy").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    
+   
+    showMessage("⏳ Submitting your report...", "info");
+
+    const formData = new FormData(event.target);
+    const url = "https://script.google.com/macros/s/AKfycbx_wo0RQNokrJZfNU1I3MkkvxXpWvJKekVYJklIm5dDz3S1kTLALyWBoQbodXm-xzQf/exec";
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            showMessage("✅ Submitted successfully!", "success");
+            event.target.reset();
+            
+        } else {
+            throw new Error("Server responded with an error");
+        }
+    } catch (error) {
+        showMessage("❌ Submission failed! Please try again.", "error");
+        console.error("Submission error:", error);
+    }
+});
+
+
+// ✅ Modern centered message popup with overlay
+function showMessage(message, type = "info") {
+    // Create overlay
+    let overlay = document.createElement("div");
+    overlay.className = "popup-overlay";
+
+    // Create message box
+    let msgBox = document.createElement("div");
+    msgBox.textContent = message;
+    msgBox.className = `popup-message ${type}`;
+
+    // Add overlay and message box to body
+    overlay.appendChild(msgBox);
+    document.body.appendChild(overlay);
+
+    // Fade-in
+    setTimeout(() => {
+        overlay.classList.add("show");
+        msgBox.classList.add("show");
+    }, 10);
+
+    // Auto remove after 3s
+    setTimeout(() => {
+        msgBox.classList.remove("show");
+        overlay.classList.remove("show");
+        setTimeout(() => {
+            overlay.remove();
+            // 👇 Redirect to index.html after popup disappears
+            window.location.href = 'index.html';
+        }, 500);
+    }, 6000);
+}
+    </script>
+</body>
+</html>
