@@ -91,7 +91,7 @@ header:hover {
 .phc { background: linear-gradient(135deg, coral, #ff7043); }
 .ri { background: linear-gradient(135deg, rgb(213, 152, 130), #d8ab9d); }
 .vitA { background-color:lightcyan ; }
-.vasectomy{background: linear-gradient(lightcyan, lightcyan);}
+.vasectomy{background: linear-gradient(to right,lightcyan,cyan);}
 
 /* ====== TEXT UNDER ICON ====== */
 .icon p {
