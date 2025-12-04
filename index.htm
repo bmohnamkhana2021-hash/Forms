@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aspirin</title>
+    <link rel="stylesheet" href="aspirin.css">
+</head>
+
+<body>
+
+
+    <form id="healthForm">
+        <h2>Administration of Low dose Aspirin to PW</h2>
+        <hr>
+    <fieldset>
+        <legend>General Information</legend>
+        <div class="grid">
+        <div class="form-group">
+            <label for="reportingYear">Year</label>
+            <select id="reportingYear" name="reportingYear" required>
+        <option value="">------Select Reporting Month-----</option>        
+        </select>
+        </div>       
+        <div class="form-group">
+            <label for="reportingMonth">Month</label>
+            <select id="reportingMonth" name="reportingMonth" required>
+        <option value="">------Select Reporting Month-----</option>        
+        </select>
+        </div>
+        <div class="form-group">
+            <label for="gp">GP</label>
+            <select id="gp" name="gp"  required>
+        <option value="">--Select GP--</option>       
+      </select>
+        </div> 
+        <div class="form-group">
+            <label for="facilityName">Facility:</label>
+            <select id="facilityName" name="facilityName" required>        
+      </select>
+        </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Aspirin Administration Report</legend>
+        <div class="grid">
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাসে নথিভুক্ত হয়েছেন</label>
+            <input type="number" name="ancReg" required>
+        </div>
+
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাসে Aspirin খাওয়া শুরু করলেন </label>
+            <input type="number" name="pwAspirinStart" required>
+        </div>
+
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাস পর্যন্ত Aspirin খাচ্ছেন (নতুন+পুরান)</label>
+            <input type="number" name="pwAspirinContinue" required>
+        </div>
+
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাসে Aspirin খাওয়ার নির্ধারিত কোর্স সম্পন্ন করলেন</label>
+            <input type="number" name="pwAspirinComplete" required>
+        </div>
+        </fieldset>
+
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাসে নির্ধারিত সময়ের আগেই Aspirin খাওয়া ছেড়ে দিয়েছেন</label>
+            <input type="number" id="aspirinStopped" name="pwAspirinStopped" onchange="toggleReasonSection()" required>
+        </div>
+
+        <div class="conditional" id="reasonsSection">            
+            <fieldset>
+                <legend>নির্ধারিত সময়ের আগেই Aspirin খাওয়া ছেড়ে দেওয়ার কারন</legend>
+            <div class="grid">
+            <div class="form-group"><label>Lost to Follow up/non compliance</label><input type="number" name="reasonFollowUp"></div>
+            <div class="form-group"><label>Bleeding problem</label><input type="number" name="reasonBleeding"></div>
+            <div class="form-group"><label>Severe Gastritis</label><input type="number" name="reasonGastritis"></div>
+            <div class="form-group"><label>Premature delivery outcome</label><input type="number" name="reasonPremature"></div>
+            <div class="form-group"><label>Any other</label><input type="number" name="reasonOther"></div>
+        </div>
+        </div>
+        </fieldset>
+
+        <div class="form-group">
+            <label>যতজন গর্ভবতী Aspirin এর নির্ধারিত কোর্স শেষ করেছেন, তাদের মধ্যে কতজনের Pregnancy outcome (Delivery/Maternal death) এই মাসে হয়েছে </label>
+            <input type="number" name="outcomeCases" required>
+        </div>
+
+        <div class="form-group">
+            <label>প্রসবের সময়ে কি কোন প্রসব কালীন সমস্যা ছিল (কেবলমাত্র APH অথবা PPH থাকলেই রিপোর্ট করবেন)</label>
+            <div class="radio-group">
+                <label><input type="radio" name="deliveryComplication" value="Yes" onchange="toggleComplicationSection()"> Yes</label>
+                <label><input type="radio" name="deliveryComplication" value="No" onchange="toggleComplicationSection()"> No</label>
+            </div>
+        </div>
+
+        <div class="conditional" id="complicationSection">
+            <div class="form-group"><label>APH</label><input type="number" name="aph" /></div>
+            <div class="form-group"><label>PPH</label><input type="number" name="pph" /></div>
+        </div>
+        </div>
+        <div id="successMessage" style="display:block; color: green;"></div>
+        <div id="errorMessage" style="display:block; color: red;"></div>
+        <button type="submit">Submit</button>
+
+    </form>
+
+    <script src="aspirin.js"></script>
+
+
+</body>
+
+</html>

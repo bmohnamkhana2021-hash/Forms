@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #fff5f0 0%, #ffe4d6 50%, #ffd6c4 100%);
+    padding: 20px;
+    font-family: "Noto Sans Bengali";
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+}
+
+form {
+    background: linear-gradient(135deg, #ffffff 0%, #fffbf8 100%);
+    padding: 40px 30px;
+    border-radius: 16px;
+    border-top: 6px solid transparent;
+    border-image: linear-gradient(90deg, #ff7f6b, #ff9370, #ffb3a0) 1;
+    /*box-shadow: 0 20px 60px rgba(255, 127, 107, 0.1), 0 0 40px rgba(255, 147, 112, 0.1);*/
+    max-width: 660px;
+    width: 100%;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+fieldset {
+    border: 2px solid #f5ddd1;
+    padding: 20px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255, 245, 240, 0.8) 0%, rgba(255, 220, 200, 0.5) 100%);
+    transition: all 0.3s ease;
+    border-left: 4px solid #ff7f6b;
+}
+
+fieldset:nth-child(even) {
+    border-left-color: #ff9370;
+    background: linear-gradient(135deg, rgba(255, 228, 214, 0.6) 0%, rgba(255, 211, 192, 0.4) 100%);
+}
+
+fieldset:nth-child(3n) {
+    border-left-color: #ffb3a0;
+    background: linear-gradient(135deg, rgba(255, 235, 224, 0.7) 0%, rgba(255, 224, 208, 0.4) 100%);
+}
+
+fieldset legend {
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 0 8px;
+    margin-left: -8px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+    padding: 12px 14px;
+    border: 2px solid #f5ddd1;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    width: 100%;
+    color: #5a4a42;
+    background: linear-gradient(135deg, #fffbf8 0%, #fff5f0 100%);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #ff7f6b;
+    background: linear-gradient(135deg, #ffffff 0%, #fffbf8 100%);
+    box-shadow: 0 0 0 3px rgba(255, 127, 107, 0.15), 0 0 20px rgba(255, 147, 112, 0.15);
+}
+
+button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+button[type="submit"] {
+    background: linear-gradient(135deg, #ff7f6b 0%, #ff9370 50%, #ffb3a0 100%);
+    color: white;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(255, 127, 107, 0.3), 0 0 30px rgba(255, 147, 112, 0.15);
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 127, 107, 0.4), 0 0 40px rgba(255, 147, 112, 0.2);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 127, 107, 0.3);
+}
+
+button[type="reset"] {
+    background: #f0f4f8;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+    width: 100%;
+}
+
+button[type="reset"]:hover {
+    background: #e2e8f0;
+    border-color: #cbd5e0;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border: 2px solid #cbd5e0;
+    border-radius: 50%;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    flex-shrink: 0;
+}
+
+input[type="radio"]:hover {
+    border-color: #667eea;
+    box-shadow: 0 0 8px rgba(102, 126, 234, 0.2);
+}
+
+input[type="radio"]:checked {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+}
+
+input[type="checkbox"] {
+    border-radius: 4px;
+}
+
+input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+}
+
+label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: #4a5568;
+    font-size: 14px;
+}
+
+.form-group > label {
+    display: block;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fafbfc;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.radio-option:hover {
+    border-color: #667eea;
+    background: #f0f4f8;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+}
+
+.radio-option input[type="radio"]:checked + label {
+    color: #667eea;
+    font-weight: 600;
+}
+
+.radio-option input[type="radio"]:checked ~ * {
+    color: #667eea;
+}
+
+.conditional {
+    display: block;
+    max-height: 1000px;
+    overflow: hidden;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.conditional.hidden {
+    display: none;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.helper-text {
+    font-size: 12px;
+    color: #a0aec0;
+    margin-top: 4px;
+}
+
+.error-message {
+    color: #f56565;
+    font-size: 12px;
+    margin-top: 6px;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #2d3748;
+    font-weight:bold
+}
+hr{
+    border: none;
+    border-top: 1px solid grey;
+    margin: 20px 0;
+}
+/* === Overlay === */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 220, 200, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* === Message Box === */
+.popup-message {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    border-left: solisd 6px #ff7f6b;
+    font-size: 16px;
+    color: black;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(255, 180, 130, 0.4);
+    backdrop-filter: blur(25px);
+    font-weight: bold;
+}
+
+.popup-message.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* === Message Variants === */
+.popup-message.info { background: white; color: blue; }
+.popup-message.success { background: white; color: green; border-left: solid 6px green; }
+.popup-message.error { background:white; color: red; }
+
