@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aspirin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #fff5f0 0%, #ffe4d6 50%, #ffd6c4 100%);
+    padding: 20px;
+    font-family: "Noto Sans Bengali";
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    background: linear-gradient(135deg, #ffffff 0%, #fffbf8 100%);
+    padding: 40px 30px;
+    border-radius: 16px;
+    border-top: 6px solid transparent;
+    border-image: linear-gradient(90deg, #ff7f6b, #ff9370, #ffb3a0) 1;
+    box-shadow: 0 20px 60px rgba(255, 127, 107, 0.1), 0 0 40px rgba(255, 147, 112, 0.1);
+    max-width: 720px;
+    width: 100%;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+fieldset {
+    border: 2px solid #f5ddd1;
+    padding: 20px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255, 245, 240, 0.8) 0%, rgba(255, 220, 200, 0.5) 100%);
+    transition: all 0.3s ease;
+    border-left: 4px solid #ff7f6b;
+}
+
+fieldset:nth-child(even) {
+    border-left-color: #ff9370;
+    background: linear-gradient(135deg, rgba(255, 228, 214, 0.6) 0%, rgba(255, 211, 192, 0.4) 100%);
+}
+
+fieldset:nth-child(3n) {
+    border-left-color: #ffb3a0;
+    background: linear-gradient(135deg, rgba(255, 235, 224, 0.7) 0%, rgba(255, 224, 208, 0.4) 100%);
+}
+
+fieldset legend {
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 0 8px;
+    margin-left: -8px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+    padding: 12px 14px;
+    border: 2px solid #f5ddd1;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    width: 100%;
+    color: #5a4a42;
+    background: linear-gradient(135deg, #fffbf8 0%, #fff5f0 100%);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #ff7f6b;
+    background: linear-gradient(135deg, #ffffff 0%, #fffbf8 100%);
+    box-shadow: 0 0 0 3px rgba(255, 127, 107, 0.15), 0 0 20px rgba(255, 147, 112, 0.15);
+}
+
+button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+button[type="submit"] {
+    background: linear-gradient(135deg, #ff7f6b 0%, #ff9370 50%, #ffb3a0 100%);
+    color: white;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(255, 127, 107, 0.3), 0 0 30px rgba(255, 147, 112, 0.15);
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 127, 107, 0.4), 0 0 40px rgba(255, 147, 112, 0.2);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 127, 107, 0.3);
+}
+
+button[type="reset"] {
+    background: #f0f4f8;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+    width: 100%;
+}
+
+button[type="reset"]:hover {
+    background: #e2e8f0;
+    border-color: #cbd5e0;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border: 2px solid #cbd5e0;
+    border-radius: 50%;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    flex-shrink: 0;
+}
+
+input[type="radio"]:hover {
+    border-color: #667eea;
+    box-shadow: 0 0 8px rgba(102, 126, 234, 0.2);
+}
+
+input[type="radio"]:checked {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+}
+
+input[type="checkbox"] {
+    border-radius: 4px;
+}
+
+input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+}
+
+label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: #4a5568;
+    font-size: 14px;
+}
+
+.form-group > label {
+    display: block;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fafbfc;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.radio-option:hover {
+    border-color: #667eea;
+    background: #f0f4f8;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+}
+
+.radio-option input[type="radio"]:checked + label {
+    color: #667eea;
+    font-weight: 600;
+}
+
+.radio-option input[type="radio"]:checked ~ * {
+    color: #667eea;
+}
+
+.conditional {
+    display: block;
+    max-height: 1000px;
+    overflow: hidden;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.conditional.hidden {
+    display: none;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.helper-text {
+    font-size: 12px;
+    color: #a0aec0;
+    margin-top: 4px;
+}
+
+.error-message {
+    color: #f56565;
+    font-size: 12px;
+    margin-top: 6px;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #2d3748;
+    font-weight:bold
+}
+hr{
+    border: none;
+    border-top: 1px solid grey;
+    margin: 20px 0;
+}
+/* === Overlay === */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 220, 200, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* === Message Box === */
+.popup-message {
+    background: rgba(255, 245, 239, 0.7);
+    padding: 20px 30px;
+    border-radius: 12px;
+    font-size: 16px;
+    color: #5a3d2b;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(255, 180, 130, 0.4);
+    backdrop-filter: blur(25px);
+}
+
+.popup-message.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* === Message Variants === */
+.popup-message.info { background: rgba(255, 214, 196, 0.8); color: #5a3d2b; }
+.popup-message.success { background: rgba(255, 228, 204, 0.8); color: #5a3d2b; }
+.popup-message.error { background: rgba(255, 183, 162, 0.85); color: #fff; }
+
+
+    </style>
+</head>
+
+<body>
+
+
+    <form id="healthForm">
+        <h2>Administration of Low dose Aspirin to PW</h2>
+        <hr>
+    <fieldset>
+        <legend>General Information</legend>
+        <div class="grid">
+        <div class="form-group">
+            <label for="reportingYear">Year</label>
+            <select id="reportingYear" name="reportingYear" required>
+        <option value="">------Select Reporting Month-----</option>        
+        </select>
+        </div>       
+        <div class="form-group">
+            <label for="reportingMonth">Month</label>
+            <select id="reportingMonth" name="reportingMonth" required>
+        <option value="">------Select Reporting Month-----</option>        
+        </select>
+        </div>
+        <div class="form-group">
+            <label for="gp">GP</label>
+            <select id="gp" name="gp"  required>
+        <option value="">--Select GP--</option>       
+      </select>
+        </div> 
+        <div class="form-group">
+            <label for="facilityName">Facility:</label>
+            <select id="facilityName" name="facilityName" required>        
+      </select>
+        </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Aspirin Administration Report</legend>
+        <div class="grid">
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাসে নথিভুক্ত হয়েছেন</label>
+            <input type="number" name="ancReg" required>
+        </div>
+
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাসে Aspirin খাওয়া শুরু করলেন </label>
+            <input type="number" name="pwAspirinStart" required>
+        </div>
+
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাস পর্যন্ত Aspirin খাচ্ছেন (নতুন+পুরান)</label>
+            <input type="number" name="pwAspirinContinue" required>
+        </div>
+
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাসে Aspirin খাওয়ার নির্ধারিত কোর্স সম্পন্ন করলেন</label>
+            <input type="number" name="pwAspirinComplete" required>
+        </div>
+        </fieldset>
+
+        <div class="form-group">
+            <label>কতজন গর্ভবতী এই মাসে নির্ধারিত সময়ের আগেই Aspirin খাওয়া ছেড়ে দিয়েছেন</label>
+            <input type="number" id="aspirinStopped" name="pwAspirinStopped" onchange="toggleReasonSection()" required>
+        </div>
+
+        <div class="conditional" id="reasonsSection">            
+            <fieldset>
+                <legend>নির্ধারিত সময়ের আগেই Aspirin খাওয়া ছেড়ে দেওয়ার কারন</legend>
+            <div class="grid">
+            <div class="form-group"><label>Lost to Follow up/non compliance</label><input type="number" name="reasonFollowUp"></div>
+            <div class="form-group"><label>Bleeding problem</label><input type="number" name="reasonBleeding"></div>
+            <div class="form-group"><label>Severe Gastritis</label><input type="number" name="reasonGastritis"></div>
+            <div class="form-group"><label>Premature delivery outcome</label><input type="number" name="reasonPremature"></div>
+            <div class="form-group"><label>Any other</label><input type="number" name="reasonOther"></div>
+        </div>
+        </div>
+        </fieldset>
+
+        <div class="form-group">
+            <label>যতজন গর্ভবতী Aspirin এর নির্ধারিত কোর্স শেষ করেছেন, তাদের মধ্যে কতজনের Pregnancy outcome (Delivery/Maternal death) এই মাসে হয়েছে </label>
+            <input type="number" name="outcomeCases" required>
+        </div>
+
+        <div class="form-group">
+            <label>প্রসবের সময়ে কি কোন প্রসব কালীন সমস্যা ছিল (কেবলমাত্র APH অথবা PPH থাকলেই রিপোর্ট করবেন)</label>
+            <div class="radio-group">
+                <label><input type="radio" name="deliveryComplication" value="Yes" onchange="toggleComplicationSection()"> Yes</label>
+                <label><input type="radio" name="deliveryComplication" value="No" onchange="toggleComplicationSection()"> No</label>
+            </div>
+        </div>
+
+        <div class="conditional" id="complicationSection">
+            <div class="form-group"><label>APH</label><input type="number" name="aph" /></div>
+            <div class="form-group"><label>PPH</label><input type="number" name="pph" /></div>
+        </div>
+        </div>
+        <div id="successMessage" style="display:block; color: green;"></div>
+        <div id="errorMessage" style="display:block; color: red;"></div>
+        <button type="submit">Submit</button>
+
+    </form>
+
+    <script >
+        document.addEventListener('DOMContentLoaded', function() {
+    // populate year dropdowns
+    const year = document.getElementById('reportingYear');
+    if (year) {
+        for (let i = 2025; i < 2031; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i;
+            year.appendChild(option);
+        }
+    }
+
+    // populate month dropdowns
+    const month = document.getElementById('reportingMonth');
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    if (month) {
+        for (let i = 0; i < monthNames.length; i++) {
+            const option = document.createElement('option');
+            option.value = monthNames[i];
+            option.text = monthNames[i];
+            month.appendChild(option);
+        }
+    }
+
+    // populate gp & facilities dropdowns
+    const data = {
+        Budhakhali: ['Rajnagar Srianthgram I', 'Rajnagar Srianthgram II', 'Budhakhali', 'Bishalaxmipur', 'Fatikpur'],
+        Narayanpur: ['Ganeshnagar East', 'Ganeshnagar West', 'Iswaripur', 'Narayanpur Part', 'Narayanpur PHC SC', 'Nandabhanga'],
+        Namkhana: ['Namkhana I', 'Namkhana II', 'Shibanagar Abad I', 'Shibnagar Abad II', 'Debnagar', 'Dwariknagar'],
+        Haripur: ['Uttar Chandanpiri', 'Dakshin Chandanpiri', 'Dakshin Chandranagar', 'Haripur', 'Maharajganj'],
+        Shibrampur: ['Rajnagar', 'Radhanagar', 'Uttar Shibrampur', 'Dakshin Shibrampur', 'Dakshin Durgapur', 'Patibunia'],
+        Moushuni: ['Moushuni 1st Gheri', 'Bagdanga', 'Kusumtala', 'Baliara New', 'Baliara Old'],
+        Freserganj: ['Amarabati', 'Bijoybati', 'Shibpur', 'Debnibas']
+    };
+
+    const gpSelect = document.getElementById('gp');
+    const facilitySelect = document.getElementById('facilityName');
+
+    if (gpSelect) {
+        Object.keys(data).forEach(function(gp) {
+            const option = document.createElement('option');
+            option.value = gp;
+            option.text = gp;
+            gpSelect.appendChild(option);
+        });
+
+        gpSelect.addEventListener('change', function() {
+            const selectedGP = this.value;
+            // Clear previous options
+            if (facilitySelect) {
+                facilitySelect.innerHTML = '<option value="" disabled selected>--Select Facility--</option>';
+                if (data[selectedGP]) {
+                    data[selectedGP].forEach(function(facility) {
+                        const option = document.createElement('option');
+                        option.value = facility;
+                        option.text = facility;
+                        facilitySelect.appendChild(option);
+                    });
+                }
+            }
+        });
+    }
+
+    // Function to toggle complication section based on delivery complication radio button
+    function toggleComplicationSection() {
+        const complicationRadios = document.getElementsByName('deliveryComplication');
+        const complicationSection = document.getElementById('complicationSection');
+        if (!complicationSection || !complicationRadios) return;
+
+        const selectedValue = Array.from(complicationRadios).find(radio => radio.checked)?.value;
+
+        if (selectedValue === 'No') {
+            complicationSection.classList.add('hidden');
+        } else if (selectedValue === 'Yes') {
+            complicationSection.classList.remove('hidden');
+        } else {
+            // No selection -> hide by default
+            complicationSection.classList.add('hidden');
+        }
+    }
+
+    // Function to toggle reason section based on aspirin stopped
+    function toggleReasonSection() {
+        const aspirinStoppedEl = document.getElementById('aspirinStopped');
+        const reasonsSection = document.getElementById('reasonsSection');
+        if (!reasonsSection || !aspirinStoppedEl) return;
+
+        const aspirinStopped = aspirinStoppedEl.value;
+        if (aspirinStopped === '0' || aspirinStopped === '') {
+            reasonsSection.classList.add('hidden');
+        } else {
+            reasonsSection.classList.remove('hidden');
+        }
+    }
+
+    // Attach listeners for radio change
+    const complicationRadios = document.getElementsByName('deliveryComplication');
+    Array.from(complicationRadios).forEach(function(radio) {
+        radio.addEventListener('change', toggleComplicationSection);
+    });
+
+    // Attach listener for aspirinStopped input
+    const aspirinStoppedEl = document.getElementById('aspirinStopped');
+    if (aspirinStoppedEl) {
+        aspirinStoppedEl.addEventListener('input', toggleReasonSection);
+    }
+
+    // Initialize on page load
+    toggleComplicationSection();
+    toggleReasonSection();
+});
+
+// --- Client submit to GAS ---
+// Replace with your deployed GAS URL
+const GAS_URL = 'YOUR_GAS_WEB_APP_URL_HERE';
+
+async function submitToGAS(formEl) {
+    const formData = new FormData(formEl);
+    const payload = {};
+    for (const [k, v] of formData.entries()) payload[k] = v;
+
+    try {
+        const res = await fetch(GAS_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        return json;
+    } catch (err) {
+        return { status: 'error', message: err.toString() };
+    }
+}
+
+// Attach form submit handler (if form exists)
+const formEl = document.getElementById('healthForm');
+if (formEl) {
+    formEl.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (GAS_URL === 'YOUR_GAS_WEB_APP_URL_HERE') {
+            alert('Please set GAS_URL in aspirin.js to your deployed Web App URL before submitting.');
+            return;
+        }
+        const result = await submitToGAS(formEl);
+        if (result && result.status === 'success') {
+            document.getElementById('successMessage').textContent = 'Submitted successfully';
+            document.getElementById('successMessage').style.display = 'block';
+            formEl.reset();
+        } else {
+            document.getElementById('errorMessage').textContent = 'Submission failed: ' + (result.message || 'unknown');
+            document.getElementById('errorMessage').style.display = 'block';
+        }
+    });
+}
+//Submit data to google sheet
+document.getElementById("healthForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    
+   
+    showMessage("⏳ Submitting your report...", "info");
+
+    const formData = new FormData(event.target);
+    const url = "https://script.google.com/macros/s/AKfycbx-Pz5oT7NYNNWZRwE6EiGd-Cz3zlHfq_tnJgV2-Cg1fsV5paJcOOGDAkVdFbUSHYq4AQ/exec";
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            showMessage("✅ Submitted successfully!", "success");
+            event.target.reset();
+            
+        } else {
+            throw new Error("Server responded with an error");
+        }
+    } catch (error) {
+        showMessage("❌ Submission failed! Please try again.", "error");
+        console.error("Submission error:", error);
+    }
+});
+
+
+// ✅ Modern centered message popup with overlay
+function showMessage(message, type = "info") {
+    // Create overlay
+    let overlay = document.createElement("div");
+    overlay.className = "popup-overlay";
+
+    // Create message box
+    let msgBox = document.createElement("div");
+    msgBox.textContent = message;
+    msgBox.className = `popup-message ${type}`;
+
+    // Add overlay and message box to body
+    overlay.appendChild(msgBox);
+    document.body.appendChild(overlay);
+
+    // Fade-in
+    setTimeout(() => {
+        overlay.classList.add("show");
+        msgBox.classList.add("show");
+    }, 10);
+
+    // Auto remove after 3s
+    setTimeout(() => {
+        msgBox.classList.remove("show");
+        overlay.classList.remove("show");
+        setTimeout(() => overlay.remove(), 500);
+    }, 3000);
+    
+};
+</script>
+
+
+</body>
+
+</html>
