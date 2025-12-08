@@ -160,18 +160,18 @@ function showMessage(message, type = "info") {
     overlay.appendChild(msgBox);
     document.body.appendChild(overlay);
 
-    // Fade-in
-    setTimeout(() => {
+      setTimeout(() => {
         overlay.classList.add("show");
         msgBox.classList.add("show");
     }, 10);
 
-    // Auto remove after 3s
     setTimeout(() => {
         msgBox.classList.remove("show");
         overlay.classList.remove("show");
-        setTimeout(() => overlay.remove(), 500);
+        setTimeout(() => {
+            overlay.remove();
+            // Redirect after message disappears
+            window.location.href = "Index.html";
+        }, 500);
     }, 3000);
-    
-};
-
+}
