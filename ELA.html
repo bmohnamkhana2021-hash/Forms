@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Data Entry Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"/>
+    <style>.checkmark {
+  width: 60px;
+  height: 60px;
+  display: block;
+}
+.checkmark.animate .checkmark-circle {
+  animation: strokeCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.checkmark.animate .checkmark-check {
+  animation: strokeCheck 0.4s 0.5s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+:root {
+  --primary: #f08080; /* Light Coral */
+  --primary-hover: #e07070;
+  --bg-gradient: linear-gradient(135deg, #fffafa 0%, #ffffff 100%);
+  --card-bg: #ffffff;
+  --card-border: #f5f5f5;
+  --text-main: #2d3436;
+  --text-muted: #636e72;
+  --input-bg: #fdfdfd;
+  --input-border: #f1f2f6;
+  --input-focus: rgba(240, 128, 128, 0.15);
+  --transition: all 0.25s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem;
+}
+
+/* Decorative Background Elements */
+.background-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.08;
+  filter: blur(80px);
+  animation: float 20s infinite alternate ease-in-out;
+}
+
+.blob-1 { width: 400px; height: 400px; top: -100px; left: -100px; }
+.blob-2 { width: 300px; height: 300px; bottom: -50px; right: -50px; animation-delay: -5s; }
+
+@keyframes float {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(60px, 40px) scale(1.1); }
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  z-index: 10;
+}
+
+.form-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 4rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+.form-header {
+  text-align: left;
+  margin-bottom: 4rem;
+  border-left: 5px solid var(--primary);
+  padding-left: 1.5rem;
+}
+
+.form-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.form-section {
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  margin-bottom: 2.5rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+select,
+input {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  color: var(--text-main);
+  font-size: 1rem;
+  transition: var(--transition);
+  outline: none;
+}
+
+select:focus,
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--input-focus);
+}
+
+select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f1f1f1;
+}
+
+select option {
+  background: #ffffff;
+  color: var(--text-main);
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Cloudflare-style Toast Notification */
+.popup-overlay {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: auto;
+  height: auto;
+  background: transparent;
+  backdrop-filter: none;
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  z-index: 2000;
+}
+
+.popup-overlay.show {
+  display: flex;
+}
+
+
+
+.popup-card {
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  text-align: left;
+  width: 370px;
+  box-shadow: 0 8px 32px rgba(34,197,94,0.10), 0 1.5px 6px rgba(0,0,0,0.06);
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transform: translateX(120%);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.glass-confirmation {
+  background: rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-radius: 20px;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  min-width: 340px;
+  max-width: 400px;
+  padding: 2rem 2.5rem;
+  position: relative;
+}
+
+.success-anim-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.25rem;
+}
+
+.checkmark {
+  width: 60px;
+  height: 60px;
+  display: block;
+}
+.checkmark-circle {
+  stroke: #22c55e;
+  stroke-width: 3;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: strokeCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.checkmark-check {
+  stroke: #22c55e;
+  stroke-width: 4;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: strokeCheck 0.4s 0.5s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+@keyframes strokeCircle {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes strokeCheck {
+  to { stroke-dashoffset: 0; }
+}
+
+.glass-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #22c55e;
+  margin: 0 0 0.15em 0;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(34,197,94,0.10);
+}
+.glass-message {
+  color: #222;
+  font-size: 1.08rem;
+  font-weight: 400;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(31,38,135,0.04);
+}
+
+.modern-confirmation {
+  border-left: none;
+  box-shadow: 0 8px 32px rgba(34,197,94,0.10), 0 1.5px 6px rgba(0,0,0,0.06);
+}
+
+.modern-icon {
+  width: 48px;
+  height: 48px;
+  background: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.10);
+  margin: 0 0.5rem 0 0;
+}
+
+.modern-icon svg {
+  width: 48px;
+  height: 48px;
+  display: block;
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.popup-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #22c55e;
+  margin: 0 0 0.15em 0;
+  letter-spacing: 0.01em;
+}
+
+.popup-message {
+  color: #222;
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.popup-overlay.show .popup-card {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.success-icon {
+  width: 24px;
+  height: 24px;
+  background: #10b981;
+  color: white;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.success-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.popup-card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+}
+
+.popup-card p {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(5px);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  gap: 1.5rem;
+}
+
+.loading-overlay.active {
+  display: flex;
+}
+
+.loading-overlay p {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(240, 128, 128, 0.1);
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+  .form-card {
+    padding: 2.5rem 1.5rem;
+  }
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+  </head>
+  <body>
+    <div class="background-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+
+    <main class="container">
+      <div class="form-card">
+        <header class="form-header">
+          <h1>ELA Report</h1>
+          
+        </header>
+
+        <form id="healthForm" class="data-form">
+          <div class="form-section" id="section-1">
+            <h2 class="section-title">Administrative Details</h2>
+            <div class="grid-container">
+              <div class="input-group">
+                <label for="year">Year</label>
+                <select id="year" name="year" required>
+                  <option value="" disabled selected>Select Year</option>                  
+                  <option value="2026-27">2026-27</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="ccp">CCP</label>
+                <select id="ccp" name="ccp" required>
+                  <option value="" disabled selected>Select CCP</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="gp">GP</label>
+                <select id="gp" name="gp" required disabled>
+                  <option value="" disabled selected>Select GP</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="subcenter">Sub Center</label>
+                <select id="subcenter" name="subcenter" required disabled>
+                  <option value="" disabled selected>Select Sub Center</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="village">Village</label>
+                <select id="village" name="village" required disabled>
+                  <option value="" disabled selected>Select Village</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-actions pager">
+              <button type="button" class="btn-primary" id="nextBtn">Next</button>
+            </div>
+          </div>
+
+          <div class="form-section" id="section-2" style="display:none;">
+            <h2 class="section-title">Health Indicators</h2>
+            <div class="grid-container">
+              <div class="input-group">
+                <label for="population">Total Population</label>
+                <input
+                  type="number"
+                  id="population"
+                  name="population"
+                  placeholder="0"
+                  min="0"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <label for="ec">Eligible Couples (EC)</label>
+                <input
+                  type="number"
+                  id="ec"
+                  name="ec"
+                  placeholder="0"
+                  min="0"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <label for="pw">Pregnant Women (PW)</label>
+                <input
+                  type="number"
+                  id="pw"
+                  name="pw"
+                  placeholder="0"
+                  min="0"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <label for="livebirth">Live Birth</label>
+                <input
+                  type="number"
+                  id="livebirth"
+                  name="livebirth"
+                  placeholder="0"
+                  min="0"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <label for="fi">Full Immunization (FI)</label>
+                <input
+                  type="number"
+                  id="fi"
+                  name="fi"
+                  placeholder="0"
+                  min="0"
+                  required
+                  readonly
+                />
+              </div>
+            </div>
+            <div class="form-actions pager">
+              <button type="button" class="btn-secondary" id="prevBtn">Previous</button>
+              <button type="reset" class="btn-secondary">Reset</button>
+              <button type="submit" class="btn-primary">Submit Report</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Modern Success Popup -->
+    <div id="successPopup" class="popup-overlay">
+        <div class="popup-card glass-confirmation">
+            <div class="success-anim-icon">
+                <svg class="checkmark" viewBox="0 0 52 52">
+                  <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                  <path class="checkmark-check" fill="none" d="M14 27l7 7 16-16"/>
+                </svg>
+            </div>
+            <div class="popup-content">
+              <h2 id="popupTitle" class="popup-title glass-title">Success!</h2>
+              <p id="popupMessage" class="popup-message glass-message">রিপোর্ট সফলভাবে পাঠানো হয়েছে</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Submitting data...</p>
+    </div>
+
+    <script >
+      // Mock Data for Cascading Dropdowns
+const hierarchyData = {
+    "Narayanpur PHC": {
+        "Budhakhali": {
+            "Bishalaxmipur": ["Bishalaxmipur"],
+            "Budhakhali": ["Budhakhali"],
+            "Fatikpur": ["Phatikpur"],
+            "Rajnagar Srianthgram I": ["Rajnagar Srianthgram", "Bishalaxmipur"],
+            "Rajnagar Srianthgram II": ["Rajnagar Srianthgram"]
+        },
+        "Narayanpur": {
+            "Nandabhanga": ["Nandabhanga"],
+            "Narayanpur Part": ["Narayanpur"],
+            "Narayanpur PHC SC": ["Narayanpur"],
+            "Ganeshnagar East": ["Ganeshnagar","Durganagar"],
+            "Ganeshnagar West": ["Ganeshnagar"],
+            "Iswaripur": ["Iswaripur","Narayanpur"]
+        }
+    },
+    "Dwariknagar RH": {
+        "Namkahana": {
+            "Namkahana I": ["Namkahana"],
+            "Namkahana II": ["Namkahana", "Narayanganj"],
+            "Shibnagar Abad I": ["Shibnagar Abad", "Madanganj"],
+            "Shibnagar Abad II": ["Shibnagar Abad"],
+            "Debnagar": ["Debnagar"],
+            "Dwariknagar": ["Dwariknagar"]
+        },
+        "Haripur": {
+            "Uttar Chandanpiri": ["Uttar Chandanpiri"],
+            "Dakshin Chandanpiri": ["Dakshin Chandanpiri"],
+            "Dakshin Chandranagar": ["Dakshin Chandranagar"],   
+            "Haripur": ["Haripur"],
+            "Maharajganj": ["Maharajganj", "Haripur"]
+        },
+        "Shibrampur": {
+            "Rajnagar": ["Rajnagar"],
+            "Radhanagar": ["Radhanagar"],
+            "Dakshin Durgapur": ["Dakshin Durgapur"],   
+            "Uttar Shibrampur": ["Shibrampur"],
+            "Dakshin Shibrampur": ["Shibrampur","Patibunia"],
+            "Patibunia": ["Patibunia"]
+        },
+        "Freserganj": {
+            "Shibpur": ["Shibpur"],
+            "Debnibas": ["Debnibas", "Bijoybati"],
+            "Bijoybati": ["Bijoybati", "Amarabati"],   
+            "Amarabati": ["Amarabati", "Lakshmanpur Abad"]
+        }
+    },
+    "Bagdanga PHC": {
+        "Moushuni": {
+            "Moushuni 1st Gheri": ["Moushuni"], 
+            "Bagdanga": ["Bagdanga"],
+            "Kusumtala": ["Kusumtala"],
+            "Baliara Old": ["Baliara"],
+            "Baliara New": ["Baliara"]
+        },
+        
+    }
+};
+
+// Select elements
+const ccpSelect = document.getElementById('ccp');
+const gpSelect = document.getElementById('gp');
+const subCenterSelect = document.getElementById('subcenter');
+const villageSelect = document.getElementById('village');
+const healthForm = document.getElementById('healthForm');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const successPopup = document.getElementById('successPopup');
+const popupTitle = document.getElementById('popupTitle');
+const popupMessage = document.getElementById('popupMessage');
+
+// Initialize CCP dropdown
+function init() {
+    Object.keys(hierarchyData).forEach(ccp => {
+        const option = new Option(ccp, ccp);
+        ccpSelect.add(option);
+    });
+}
+
+// Helper to clear and disable dropdowns
+function resetDropdown(select, placeholder) {
+    select.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
+    select.disabled = true;
+}
+
+// Event Listeners for Cascading Logic
+ccpSelect.addEventListener('change', (e) => {
+    const selectedCCP = e.target.value;
+    resetDropdown(gpSelect, "Select GP");
+    resetDropdown(subCenterSelect, "Select Sub Center");
+    resetDropdown(villageSelect, "Select Village");
+
+    if (selectedCCP) {
+        gpSelect.disabled = false;
+        const gps = Object.keys(hierarchyData[selectedCCP]);
+        gps.forEach(gp => {
+            gpSelect.add(new Option(gp, gp));
+        });
+    }
+});
+
+gpSelect.addEventListener('change', (e) => {
+    const selectedCCP = ccpSelect.value;
+    const selectedGP = e.target.value;
+    resetDropdown(subCenterSelect, "Select Sub Center");
+    resetDropdown(villageSelect, "Select Village");
+
+    if (selectedGP) {
+        subCenterSelect.disabled = false;
+        const subCenters = Object.keys(hierarchyData[selectedCCP][selectedGP]);
+        subCenters.forEach(sc => {
+            subCenterSelect.add(new Option(sc, sc));
+        });
+    }
+});
+
+subCenterSelect.addEventListener('change', (e) => {
+    const selectedCCP = ccpSelect.value;
+    const selectedGP = gpSelect.value;
+    const selectedSC = e.target.value;
+    resetDropdown(villageSelect, "Select Village");
+
+    if (selectedSC) {
+        villageSelect.disabled = false;
+        const villages = hierarchyData[selectedCCP][selectedGP][selectedSC];
+        villages.forEach(v => {
+            villageSelect.add(new Option(v, v));
+        });
+    }
+});
+
+// Google Apps Script Web App URL
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxrDwzDs1MnVKNECamy7AXI2u5zuFWt5EGRVsYx4KViLVf0fgb9Ee6ve0Q1NsGxU6-j/exec';
+
+// Form Submission
+healthForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    // Show loading overlay
+    loadingOverlay.classList.add('active');
+    
+    // Show loading state on button
+    const submitBtn = healthForm.querySelector('.btn-primary');
+    const originalText = submitBtn.innerText;
+    submitBtn.innerText = 'Submitting...';
+    submitBtn.disabled = true;
+
+    // Prepare form data
+    const formData = new FormData(healthForm);
+    const queryString = new URLSearchParams(formData).toString();
+
+    // Send data to Google Sheets
+    fetch(`${SCRIPT_URL}?${queryString}`, {
+        method: 'POST'
+    })
+    .then(response => {
+        // Hide loading overlay
+        loadingOverlay.classList.remove('active');
+
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+
+        // Prepare Success Toast content
+        popupTitle.innerText = "সাফল্য";
+        popupMessage.innerText = "রিপোর্ট সফলভাবে পাঠানো হয়েছে";
+
+        // Animate the checkmark
+        const checkmark = document.querySelector('.checkmark');
+        if (checkmark) {
+          checkmark.classList.remove('animate');
+          // Force reflow to restart animation
+          void checkmark.offsetWidth;
+          checkmark.classList.add('animate');
+        }
+
+        // Show Toast
+        successPopup.classList.add('show');
+
+        // Reset Form
+        healthForm.reset();
+        resetDropdown(gpSelect, "Select GP");
+        resetDropdown(subCenterSelect, "Select Sub Center");
+        resetDropdown(villageSelect, "Select Village");
+
+        // Hide Toast after 2 seconds
+        setTimeout(() => {
+            successPopup.classList.remove('show');
+        }, 2000);
+    })
+    .catch(error => {
+        // Hide loading overlay
+        loadingOverlay.classList.remove('active');
+        
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+        
+        // Prepare Error Toast content
+        popupTitle.innerText = "Submission failed";
+        popupMessage.innerText = "An error occurred while saving. Please try again.";
+        
+        const card = successPopup.querySelector('.popup-card');
+        const icon = card.querySelector('.success-icon');
+        
+        card.style.borderLeftColor = "#ef4444";
+        icon.style.background = "#ef4444";
+        icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+
+        // Show Toast
+        successPopup.classList.add('show');
+        
+        setTimeout(() => {
+            successPopup.classList.remove('show');
+        }, 3500);
+    });
+
+});
+
+// Run Init
+init();
+//calculate FI
+
+function calculateFI() {
+    const liveBirths = parseFloat(document.getElementById("livebirth").value);
+    const fiValue = (liveBirths - (liveBirths * 0.017)).toFixed(0);
+    document.getElementById("fi").value = fiValue;  
+}   
+const liveBirthsInput = document.getElementById("livebirth");
+liveBirthsInput.addEventListener("input", calculateFI);
+
+    // Pagination logic (index.html only)
+    document.addEventListener('DOMContentLoaded', function() {
+      var section1 = document.getElementById('section-1');
+      var section2 = document.getElementById('section-2');
+      var nextBtn = document.getElementById('nextBtn');
+      var prevBtn = document.getElementById('prevBtn');
+      if (nextBtn && section1 && section2) {
+        nextBtn.addEventListener('click', function() {
+          // Validate required fields in section 1
+          var required = section1.querySelectorAll('[required]');
+          var valid = true;
+          required.forEach(function(input) {
+            if (!input.value) {
+              input.classList.add('input-error');
+              valid = false;
+            } else {
+              input.classList.remove('input-error');
+            }
+          });
+          if (!valid) return;
+          section1.style.display = 'none';
+          section2.style.display = 'block';
+        });
+      }
+      if (prevBtn && section1 && section2) {
+        prevBtn.addEventListener('click', function() {
+          section2.style.display = 'none';
+          section1.style.display = 'block';
+        });
+      }
+    });
+    </script>
+  </body>
+</html>
