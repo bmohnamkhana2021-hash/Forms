@@ -219,6 +219,27 @@ footer{
                 <input type="number" id="tm" name="tm" required>
             </div>
         </fieldset>
+            <fieldset>
+                <legend>HRI report</legend>
+                <div class="grid">
+                    <div class="group">
+                        <label for="emergency_medicine">Emargency medicine:</label>
+                        <input type="number" id="emergency_medicine" name="emergency_medicine" min="0">
+                    </div>
+                    <div class="group">
+                        <label for="paediatric">Paediatric:</label>
+                        <input type="number" id="paediatric" name="paediatric" min="0">
+                    </div>
+                    <div class="group">
+                        <label for="casualty">Casualty:</label>
+                        <input type="number" id="casualty" name="casualty" min="0">
+                    </div>
+                    <div class="group">
+                        <label for="suspected_heat_stroke">Suspected heat stroke:</label>
+                        <input type="number" id="suspected_heat_stroke" name="suspected_heat_stroke" min="0">
+                    </div>
+                </div>
+            </fieldset>
         <button type="submit">Submit Report</button>
         <footer>@developed by Arthita Roy, EA, BPMU</footer>
     </form>
@@ -241,7 +262,7 @@ y.addEventListener("input",opdCensus);
     showMessage("⏳ Submitting your report...", "info");
 
     const formData = new FormData(event.target);
-    const url = "https://script.google.com/macros/s/AKfycbw_dn7UZL3S0XYwy_37hoCyUk7VUhypTnCD4pR1M7wNWPuKWRX3DiAASL9CnH828eI2Kg/exec";
+    const url = "https://script.google.com/macros/s/AKfycbzTxqID9dGg3iJuqHaFFant38ZOX1A5mHVXPVg1DimIDGdZMs1mdtPgXhna1AW_1q_itQ/exec";
 
     try {
         const response = await fetch(url, {
