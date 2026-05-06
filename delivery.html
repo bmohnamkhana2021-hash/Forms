@@ -247,7 +247,7 @@
                                     <i data-lucide="heart" class="w-3 h-3"></i>
                                     Birth Outcomes
                                 </div>
-                                <div class="grid grid-cols-2 gap-3">
+                                <div class="grid grid-cols-3 gap-3">
                                     <div class="space-y-1">
                                         <label class="text-[9px] font-bold text-slate-400">Live</label>
                                         <input type="number" name="live_birth" id="live_birth" value="0" min="0" class="w-full premium-input rounded-lg px-3 py-1.5 text-xs font-bold">
@@ -255,6 +255,10 @@
                                     <div class="space-y-1">
                                         <label class="text-[9px] font-bold text-slate-400">Still</label>
                                         <input type="number" name="still_birth" id="still_birth" value="0" min="0" class="w-full premium-input rounded-lg px-3 py-1.5 text-xs font-bold">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-[9px] font-bold text-slate-400">Abortion</label>
+                                        <input type="number" name="total_abortion" id="total_abortion" value="0" min="0" class="w-full premium-input rounded-lg px-3 py-1.5 text-xs font-bold">
                                     </div>
                                 </div>
                             </div>
@@ -402,13 +406,13 @@
             lucide.createIcons();
         };
 
-        ['delivery_home', 'delivery_govt', 'delivery_private', 'normal_delivery', 'cs_delivery', 'live_birth', 'still_birth'].forEach(id => {
+        ['delivery_home', 'delivery_govt', 'delivery_private', 'normal_delivery', 'cs_delivery', 'live_birth', 'still_birth', 'total_abortion'].forEach(id => {
             document.getElementById(id).addEventListener('input', updateValidation);
         });
 
         // --- Google Sheets Integration ---
         // Replace the URL below with your deployed Google Apps Script Web App URL
-        const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxTioJ4rLXqknmqwwIyjLHY8og53Y4tJu8-QCHqlA85ogqfxrhj64lvQvJZCuH1wpPahQ/exec';
+        const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzfUuJZZpAqbN9gwgcL59D8LKfD2qwdS5Xe4_ShcqgCMgmNRtGHFi5NL-kAa1L_kSgZbw/exec';
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
