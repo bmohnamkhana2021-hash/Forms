@@ -1,407 +1,689 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn" class="h-full">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vitamin A Oil</title>
-   <style>
-    body{
-    padding: 20px;
-    margin: auto;
-    justify-content: center;
-    align-items: center;
-    min-height: 70vh;
-    display: flex;
-
-}
-form{
-    background-color: white;
-    border: solid 10px white;
-    border-radius: 20px;
-    max-width: 720px;
-    width: 100%;
-    box-shadow: 2px 2px 3px 2px gray;
-    padding: 25px 20px;
-  
-}
-input,select{
-    padding: 8px 7px;
-    border-left: solid 6px teal;
-    border-radius: 8px;
-    box-sizing: border-box;
-    width: 100%;
-
-}
-.grid{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 15px;   
-    font-family: "Kalpurush";
-    font-size: 14px;   
-}
-.group{
-    display: flex;
-    flex-direction: column;
-}
-.grid1{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    font-family: "Kalpurush";
-    font-size: 14px;
-}
-
-fieldset{
-    box-sizing: border-box;
-    width: 100%;
-    border: solid 1px coral;
-    border-radius: 10px;
-    margin-top: 8px;
-
-}
-
-
-h3,h4{
-    text-align: center;
-    color: darkorchid;
-    font-weight: bold;
-    gap: 1px;
-}
-label{
-    margin-top: 8px;
-}
-button{
-    padding: 10px 8px;
-    width: 100%;
-    border: solid 1px darkslateblue;
-    border-radius: 8px;
-    margin-top: 10px;
-    background-color: lightcyan;
-    font-weight: bold;
-     box-shadow: 0 5px #999; /* Initial shadow */
-    transition: all 0.2s ease; /* Smooth transition for changes */
-}
-button:hover{
-    background-color: cyan;
-    cursor: pointer;    
-}
-button:active{
-     box-shadow: 0 2px #666; /* Reduced shadow */
-      transform: translateY(3px); /* Move down slightly */
-}
-footer{
-    text-align: center;
-    margin-top: 20px;
-    color: grey;
-}
-#round,#totalTarget,#totalSup,#percentage{
-    border-left: solid 5px green;
-    background-color: lightblue;
-   
-}
-
-/* === Overlay === */
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 220, 200, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-    z-index: 1000;
-}
-
-.popup-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* === Message Box === */
-.popup-message {
-    background: rgba(255, 245, 239, 0.7);
-    padding: 20px 30px;
-    border-radius: 12px;
-    font-size: 16px;
-    color: #5a3d2b;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 0.3s, transform 0.3s;
-    max-width: 80%;
-    text-align: center;
-    box-shadow: 0 4px 20px grey;
-    backdrop-filter: blur(20px);
-    border-left: solid 8px teal;
-}
-
-.popup-message.show {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* === Message Variants === */
-.popup-message.info { background: white; color: black; }
-.popup-message.success { background: white; color: green; }
-.popup-message.error { background: white; color: red; }
-</style>
-</head>
-<body>
-    <form action="" id="vitA">
-        <h3>Bi Annual Vitamin A Oil Administration</h3>
-        <h4>Namkhana Block, Diamond Harbour HD</h4>
-        <hr>
-        <fieldset>
-            <legend>General Information</legend>
-        <div class="grid">
-            <div class="group">
-                <label for="">বছর :</label>
-                <select name="year" id="year" required>
-                    <option value="">--Select Year--</option>
-                    
-                </select>
-            </div>
-            <div class="group">
-                <label for="">মাস :</label>
-                <select name="month" id="month" required>
-                    <option value="">--Select Month--</option>                    
-                </select>
-            </div> 
-             <div class="group">
-                <label for="">রাউন্ড :</label>
-                <input type="text" id="round" name="round" readonly>
-            </div>            
-        </div>
-        <div class="grid1">
-        <div class="group">
-                <label for="">গ্রাম পঞ্চায়েত :</label>
-                <select name="gp" id="gp" required>
-                    <option value="">--Select GP--</option>
-                </select>
-            </div>
-            <div class="group">
-                <label for="">সুস্বাস্থ্য/উপস্বাস্থ্য কেন্দ্র :</label>
-                <select name="ru" id="ru" required>                    
-                </select>
-            </div> 
-            </div>   
-        </fieldset>
-        <fieldset>
-            <legend>Age group wise report</legend>
-            <div class="grid1">
-                <div class="group">                   
-                <label for="">যোগ্য শিশুর সংখ্যা <br>(৯ মাস - ১২ মাস)</label>
-                <input type="number" id="target1" name="target1" >
-            </div>  
-            <div class="group">                   
-                <label for="">কতজন ভিটামিন A Oil খেয়েছে <br>(৯ মাস - ১২ মাস)</label>
-                <input type="number" id="sup1" name="sup1" >
-            </div>
-            <div class="group">                   
-                <label for="">যোগ্য শিশুর সংখ্যা <br>(১২ মাস - ২৪ মাস)</label>
-                <input type="number" id="target2" name="target2" >
-            </div>  
-            <div class="group">                   
-                <label for="">কতজন ভিটামিন A Oil খেয়েছে <br>(১২ মাস - ২৪ মাস)</label>
-                <input type="number" id="sup2" name="sup2" >
-            </div>
-            <div class="group">                   
-                <label for="">যোগ্য শিশুর সংখ্যা <br>(২৪ মাস - ৩৬ মাস)</label>
-                <input type="number" id="target3" name="target3" >
-            </div>  
-            <div class="group">                   
-                <label for="">কতজন ভিটামিন A Oil খেয়েছে <br>(২৪ মাস - ৩৬ মাস)</label>
-                <input type="number" id="sup3" name="sup3" >
-            </div>
-             <div class="group">                   
-                <label for="">যোগ্য শিশুর সংখ্যা <br>(৩৬ মাস - ৬০ মাস)</label>
-                <input type="number" id="target4" name="target4" >
-            </div>  
-            <div class="group">                   
-                <label for="">কতজন ভিটামিন A Oil খেয়েছে <br>(৩৬ মাস - ৬০ মাস)</label>
-                <input type="number" id="sup4" name="sup4" >
-            </div>
-            </div>         
-        </fieldset>
-        <fieldset>
-            <legend>Cumulative Report</legend>
-            <div class="grid">
-                <div class="group">
-                    <label for="">মোট যোগ্যশিশুর <br>সংখ্যা</label>
-                    <input type="number" id="totalTarget" name="totalTarget" readonly>
-                </div>
-                <div class="group">
-                    <label for="">মোট কতজন শিশু ভিটামিন A Oil খেয়েছে</label>
-                    <input type="number" id="totalSup" name="totalSup" readonly>
-                </div>
-                <div class="group">
-                    <label for=""> % শিশু ভিটামিন A Oil খেয়েছে</label>
-                    <input type="number" id="percentage" name="percentage" readonly>
-                </div>
-            </div>
-        </fieldset>
-        <button id="btn">Submit</button>
-        <footer>@copyright Arthita Roy, Executive Assistant</footer>
-    </form>
+    <title>ভিটামিন এ অয়েল রিপোর্টিং ফর্ম</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;850&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        const year = [2025,2026,2027,2028,2029];
-const listYear=document.getElementById('year');
-const month = ['June', 'December'];
-const listMonth=document.getElementById('month');
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Anek Bangla"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom styling to load Google Fonts and adjust inputs -->
+    <style>
+        * {
+            font-family: 'Anek Bangla', 'Inter', sans-serif;
+        }
 
-for (let i = 0; i < year.length; i++) {
-    const option = document.createElement("option");
-    option.value=year[i];
-    option.innerHTML=year[i];
-    listYear.appendChild(option);    
-}
+        /* Hide number input spinners for cleaner look */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-for (let i = 0; i < month.length; i++) {
-    const option = document.createElement("option");
-    option.value=month[i];
-    option.innerHTML=month[i];
-    listMonth.appendChild(option);    
-}
-function round(){
-const round=document.getElementById('round');
-round.value = listMonth.value +"," + listYear.value;
-}
-listMonth.addEventListener("input",round);
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
 
-const data={
-    Budhakhali:['Rajnagar Srianthgram I', 'Rajnagar Srianthgram II', 'Budhakhali', 'Bishalaxmipur', 'Fatikpur'],
-    Narayanpur:['Ganeshnagar East', 'Ganeshnagar West', 'Iswaripur', 'Narayanpur Part', 'Narayanpur PHC SC', 'Nandabhanga'],
-    Namkhana:['Namkhana I', 'Namkhana II', 'Shibanagar Abad I', 'Shibnagar Abad II', 'Debnagar', 'Dwariknagar'],
-    Haripur:['Uttar Chandanpiri','Dakshin Chandanpiri','Dakshin Chandranagar','Haripur','Maharajganj'],
-    Shibrampur:['Rajnagar','Radhanagar','Uttar Shibrampur','Dakshin Shibrampur','Dakshin Durgapur','Patibunia'],
-    Moushuni:['Moushuni 1st Gheri','Bagdanga','Kusumtala','Baliara New','Baliara Old'],
-    Freserganj:['Amarabati','Bijoybati','Shibpur','Debnibas']
-};
-const gp=document.getElementById('gp');
-const ru=document.getElementById('ru');
+<body
+    class="bg-gradient-to-tr from-amber-50 via-stone-50 to-red-50 min-h-full flex items-center justify-center p-3 sm:p-6 md:p-8 font-sans">
 
-Object.keys(data).forEach(function(gpList){
-    const option = document.createElement('option');
-    option.value=gpList;
-    option.textContent=gpList;
-    gp.appendChild(option);
-});
-gp.addEventListener('change', function(x){
-    ru.innerHTML='<option value="">--Select reporting Unit--</option>';
-    const gpvalue=this.value;
-    if(!gpvalue){
-        ru.diabled=true;
-        return;    
-    }
-    const reportingUnit=data[gpvalue];
-    reportingUnit.forEach(function(z){
-        const option = document.createElement('option');
-        option.value=z;
-        option.textContent=z;
-        ru.appendChild(option);
-    })
-ru.diabled=false;
-});
+    <!-- Container Card (White Card with Saffron Top Border) -->
+    <div
+        class="max-w-xl w-full bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+
+        <!-- Header Banner (Maroon Background with Saffron Accent Border) -->
+        <div class="bg-[#800000] p-5 sm:p-8 text-white relative border-b-4 border-[#ea580c]">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-8 -mt-8 blur-lg"></div>
+            <div class="flex items-center justify-center gap-2 mb-1.5">
+                <svg class="w-7 h-7 sm:w-8 sm:h-8 text-[#ea580c] opacity-90" fill="none" stroke="currentColor"
+                    stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                    </path>
+                </svg>
+                <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-center">ভিটামিন এ অয়েল রিপোর্ট</h1>
+            </div>
+            <p class="text-amber-100 text-lg sm:text-xl text-center font-semibold max-w-md mx-auto mt-1">নামখানা ব্লক
+            </p>
+        </div>
+
+        <!-- Form Body -->
+        <div class="p-4 sm:p-8">
+            <form id="reportForm" class="space-y-5">
+                <!-- General Section -->
+                <div>
+                    <h2
+                        class="text-xs font-bold text-[#800000] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                        <span>সাধারণ তথ্য</span>
+                        <span class="h-px bg-slate-200 grow"></span>
+                    </h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <!-- Year Select -->
+                        <div>
+                            <label for="report_year" class="block text-xs font-medium text-slate-600 mb-1">রিপোর্টিং
+                                বছর</label>
+                            <select name="report_year" id="report_year"
+                                class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 sm:p-2.5 transition-all duration-150"
+                                required>
+                                <!-- Populated via JS -->
+                            </select>
+                        </div>
+
+                        <!-- Month Select -->
+                        <div>
+                            <label for="report_month" class="block text-xs font-medium text-slate-600 mb-1">রিপোর্টিং
+                                মাস</label>
+                            <select name="report_month" id="report_month"
+                                class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 sm:p-2.5 transition-all duration-150"
+                                required>
+                                <!-- Populated via JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-3.5">
+                        <!-- Auto-Calculated Round -->
+                        <div>
+                            <label for="report_round" class="block text-xs font-medium text-slate-600 mb-1">রাউন্ড
+                                (স্বয়ংক্রিয়ভাবে হিসাবকৃত)</label>
+                            <input type="text" name="report_round" id="report_round" readonly
+                                class="w-full bg-slate-100 border border-slate-300 text-slate-500 text-base sm:text-sm font-semibold rounded-lg block p-2 sm:p-2.5 outline-none pointer-events-none select-none"
+                                required>
+                        </div>
+
+                        <!-- Reporting Unit from SC Facilities -->
+                        <div>
+                            <label for="reporting_unit"
+                                class="block text-xs font-medium text-slate-600 mb-1">সুস্বাস্থ্য / উপস্বাস্থ্য
+                                কেন্দ্র</label>
+                            <select name="reporting_unit" id="reporting_unit"
+                                class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 sm:p-2.5 transition-all duration-150"
+                                required>
+                                <option value="" disabled selected>সুস্বাস্থ্য / উপস্বাস্থ্য কেন্দ্র নির্বাচন করুন..
+                                </option>
+                                <option value="Amarabati">Amarabati</option>
+                                <option value="Bagdanga">Bagdanga</option>
+                                <option value="Baliara New">Baliara New</option>
+                                <option value="Baliara Old">Baliara Old</option>
+                                <option value="Bijoybati">Bijoybati</option>
+                                <option value="Bishalaxmipur">Bishalaxmipur</option>
+                                <option value="Budhakhali">Budhakhali</option>
+                                <option value="Dakshin Chandanpiri">Dakshin Chandanpiri</option>
+                                <option value="Dakshin Chandranagar">Dakshin Chandranagar</option>
+                                <option value="Dakshin Durgapur">Dakshin Durgapur</option>
+                                <option value="Dakshin Shibrampur">Dakshin Shibrampur</option>
+                                <option value="Debnagar">Debnagar</option>
+                                <option value="Debnibas">Debnibas</option>
+                                <option value="Dwariknagar">Dwariknagar</option>
+                                <option value="Fatikpur">Fatikpur</option>
+                                <option value="Ganeshnagar East">Ganeshnagar East</option>
+                                <option value="Ganeshnagar West">Ganeshnagar West</option>
+                                <option value="Haripur">Haripur</option>
+                                <option value="Iswaripur">Iswaripur</option>
+                                <option value="Kusumtala">Kusumtala</option>
+                                <option value="Maharajganj">Maharajganj</option>
+                                <option value="Moushuni 1st Gheri">Moushuni 1st Gheri</option>
+                                <option value="Namkhana I">Namkhana I</option>
+                                <option value="Namkhana II">Namkhana II</option>
+                                <option value="Nandabhanga">Nandabhanga</option>
+                                <option value="Narayanpur Part">Narayanpur Part</option>
+                                <option value="Narayanpur PHC SC">Narayanpur PHC SC</option>
+                                <option value="Patibunia">Patibunia</option>
+                                <option value="Radhanagar">Radhanagar</option>
+                                <option value="Rajnagar">Rajnagar</option>
+                                <option value="Rajnagar Srinathgram I">Rajnagar Srinathgram I</option>
+                                <option value="Rajnagar Srinathgram II">Rajnagar Srinathgram II</option>
+                                <option value="Shibnagar Abad I">Shibnagar Abad I</option>
+                                <option value="Shibnagar Abad II">Shibnagar Abad II</option>
+                                <option value="Shibpur">Shibpur</option>
+                                <option value="Uttar Chandanpiri">Uttar Chandanpiri</option>
+                                <option value="Uttar Shibrampur">Uttar Shibrampur</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Section -->
+                <div>
+                    <h2
+                        class="text-xs font-bold text-[#800000] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                        <span>রিপোর্টের তথ্য মেট্রিক্স</span>
+                        <span class="h-px bg-slate-200 grow"></span>
+                    </h2>
+
+                    <!-- Responsive Border Grid Container -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-slate-50/50">
+
+                        <!-- Desktop Header (Hidden on Mobile) -->
+                        <div
+                            class="hidden sm:grid grid-cols-12 gap-2 p-3 bg-slate-100/80 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">
+                            <div class="col-span-6 text-left pl-2">বয়স গ্রুপ ক্যাটাগরি</div>
+                            <div class="col-span-3">যোগ্য শিশুর সংখ্যা</div>
+                            <div class="col-span-3">কতজন শিশুকে ভিটামিন A দেওয়া হয়েছে</div>
+                        </div>
+
+                        <div class="divide-y divide-slate-150">
+                            <!-- 9-<12m -->
+                            <div class="grid grid-cols-12 gap-x-3 gap-y-1 p-3 items-center">
+                                <label
+                                    class="col-span-12 sm:col-span-6 text-sm font-semibold sm:font-medium text-slate-700 sm:text-slate-600 sm:pl-2">বয়স
+                                    গ্রুপ ৯ - &lt; ১২ মাস</label>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 text-center">যোগ্য
+                                        শিশুর সংখ্যা</span>
+                                    <input type="number" name="age_9_12_due" id="age_9_12_due" min="0" value="0"
+                                        class="w-full bg-white border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 text-center transition-all duration-150"
+                                        required>
+                                </div>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 text-center">কতজন
+                                        শিশুকে ভিটামিন A দেওয়া হয়েছে</span>
+                                    <input type="number" name="age_9_12_rec" id="age_9_12_rec" min="0" value="0"
+                                        class="w-full bg-white border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 text-center transition-all duration-150"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- 12-<24m -->
+                            <div class="grid grid-cols-12 gap-x-3 gap-y-1 p-3 items-center">
+                                <label
+                                    class="col-span-12 sm:col-span-6 text-sm font-semibold sm:font-medium text-slate-700 sm:text-slate-600 sm:pl-2">বয়স
+                                    গ্রুপ ১২ - &lt; ২৪ মাস</label>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 text-center">যোগ্য
+                                        শিশুর সংখ্যা</span>
+                                    <input type="number" name="age_12_24_due" id="age_12_24_due" min="0" value="0"
+                                        class="w-full bg-white border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 text-center transition-all duration-150"
+                                        required>
+                                </div>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 text-center">কতজন
+                                        শিশুকে ভিটামিন A দেওয়া হয়েছে</span>
+                                    <input type="number" name="age_12_24_rec" id="age_12_24_rec" min="0" value="0"
+                                        class="w-full bg-white border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 text-center transition-all duration-150"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- 24-<36m -->
+                            <div class="grid grid-cols-12 gap-x-3 gap-y-1 p-3 items-center">
+                                <label
+                                    class="col-span-12 sm:col-span-6 text-sm font-semibold sm:font-medium text-slate-700 sm:text-slate-600 sm:pl-2">বয়স
+                                    গ্রুপ ২৪ - &lt; ৩৬ মাস</label>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 text-center">যোগ্য
+                                        শিশুর সংখ্যা</span>
+                                    <input type="number" name="age_24_36_due" id="age_24_36_due" min="0" value="0"
+                                        class="w-full bg-white border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 text-center transition-all duration-150"
+                                        required>
+                                </div>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 text-center">কতজন
+                                        শিশুকে ভিটামিন A দেওয়া হয়েছে</span>
+                                    <input type="number" name="age_24_36_rec" id="age_24_36_rec" min="0" value="0"
+                                        class="w-full bg-white border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 text-center transition-all duration-150"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- 36-<60m -->
+                            <div class="grid grid-cols-12 gap-x-3 gap-y-1 p-3 items-center">
+                                <label
+                                    class="col-span-12 sm:col-span-6 text-sm font-semibold sm:font-medium text-slate-700 sm:text-slate-600 sm:pl-2">বয়স
+                                    গ্রুপ ৩৬ - &lt; ৬০ মাস</label>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 text-center">যোগ্য
+                                        শিশুর সংখ্যা</span>
+                                    <input type="number" name="age_36_60_due" id="age_36_60_due" min="0" value="0"
+                                        class="w-full bg-white border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 text-center transition-all duration-150"
+                                        required>
+                                </div>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 text-center">কতজন
+                                        শিশুকে ভিটামিন A দেওয়া হয়েছে</span>
+                                    <input type="number" name="age_36_60_rec" id="age_36_60_rec" min="0" value="0"
+                                        class="w-full bg-white border border-slate-300 text-slate-900 text-base sm:text-sm rounded-lg focus:ring-2 focus:ring-[#ea580c]/20 focus:border-[#ea580c] block p-2 text-center transition-all duration-150"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- Totals Row (Saffron/Amber Accent Background) -->
+                            <div
+                                class="grid grid-cols-12 gap-x-3 gap-y-1.5 p-3 items-center bg-amber-50 border-t border-amber-200 font-semibold text-amber-900">
+                                <span class="col-span-12 sm:col-span-6 pl-2 text-sm font-bold text-amber-800">মোট শিশু
+                                    (হিসাবকৃত)</span>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-0.5 text-center">মোট
+                                        যোগ্য শিশুর সংখ্যা</span>
+                                    <input type="number" id="total_due" readonly value="0"
+                                        class="w-full bg-amber-100/50 border border-amber-200 text-amber-800 text-base sm:text-sm font-bold block p-2 text-center outline-none select-none pointer-events-none">
+                                </div>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <span
+                                        class="block sm:hidden text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-0.5 text-center">মোট
+                                        কতজন শিশুকে ভিটামিন A দেওয়া হয়েছে</span>
+                                    <input type="number" id="total_rec" readonly value="0"
+                                        class="w-full bg-amber-100/50 border border-amber-200 text-amber-800 text-base sm:text-sm font-bold block p-2 text-center outline-none select-none pointer-events-none">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit / Reset button row -->
+                <div class="flex gap-3 pt-2">
+                    <!-- Green Submit Button -->
+                    <button type="submit" id="submitBtn"
+                        class="flex-1 text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-bold rounded-lg text-sm px-4 py-3 text-center inline-flex items-center justify-center gap-2 transition-all duration-150 shadow-md">
+                        <!-- Loading spinner -->
+                        <svg id="loadingSpinner" class="hidden animate-spin h-5 w-5 text-white" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        <span id="btnText">রিপোর্ট জমা দিন</span>
+                    </button>
+
+                    <!-- Reset Button with Maroon styling -->
+                    <button type="button" id="resetBtn"
+                        class="px-4 py-3 text-sm font-bold text-[#800000] bg-white border border-[#800000]/30 rounded-lg hover:bg-red-50/50 focus:ring-4 focus:outline-none focus:ring-red-100 transition-all duration-150 flex items-center justify-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3-3 3 3m-3-3v12"></path>
+                        </svg>
+                        <span>রিসেট করুন</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
 
-   
-function calcTotal(idList, output) {
-    let total = 0;
-    idList.forEach(id => {
-        total += parseFloat(document.getElementById(id).value) || 0;
-    });
-    document.getElementById(output).value = total;
-    return total;
-}
+    <!-- Centered Success Modal overlay -->
+    <div id="successModal"
+        class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div
+            class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl border border-slate-100 transform scale-95 transition-all duration-300">
+            <div
+                class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-500 border-2 border-emerald-100">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">রিপোর্ট সফলভাবে জমা দেওয়া হয়েছে!</h3>
+            <button id="modalOkBtn"
+                class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-semibold rounded-lg text-sm px-5 py-3 transition-all duration-150 shadow-md">
+                Ok
+            </button>
+        </div>
+    </div>
 
-function calculateAll() {
-    const totalTarget = calcTotal(["target1","target2","target3","target4"], "totalTarget");
-    const totalSup = calcTotal(["sup1","sup2","sup3","sup4"], "totalSup");
+    <!-- Centered Error Modal overlay -->
+    <div id="errorModal"
+        class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div
+            class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl border border-slate-100 transform scale-95 transition-all duration-300">
+            <div
+                class="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500 border-2 border-rose-100">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                    </path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">ত্রুটি</h3>
+            <p id="errorModalMsg" class="text-slate-600 text-sm mb-6 font-semibold">কতজন শিশুকে ভিটামিন A দেওয়া হয়েছে
+                তা অবশ্যই যোগ্য শিশুর সংখ্যা থেকে কম বা সমান হতে হবে।</p>
+            <button id="errorModalCloseBtn"
+                class="w-full text-white bg-rose-600 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-semibold rounded-lg text-sm px-5 py-3 transition-all duration-150 shadow-md">
+                ঠিক আছে
+            </button>
+        </div>
+    </div>
 
-    const percentage = document.getElementById("percentage");
+    <!-- Toast Error Notification (used for API / Database failures) -->
+    <div id="toast-container" class="fixed top-6 right-6 z-50 flex flex-col gap-3 max-w-xs w-full"></div>
 
-    if (totalTarget === 0) {
-        percentage.value = 0;
-    } else {
-        percentage.value = ((totalSup / totalTarget) * 100).toFixed(2);
-    }
-}
+    <script>
+        // --- SUPABASE CONFIGURATION ---
+        // TODO: Replace these with your actual Supabase Project URL and Anon Key
+        const SUPABASE_URL = 'https://kijqcmumynutyhodxjwo.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_3vIQeWE4irMp3ni9vSw7fg_2sgzjurY';
 
-["target1","target2","target3","target4","sup1","sup2","sup3","sup4"]
-.forEach(id => {
-    document.getElementById(id).addEventListener("input", calculateAll);
-});
+        const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // ------------------------------
 
+        // Form references
+        const reportForm = document.getElementById('reportForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const btnText = document.getElementById('btnText');
+        const toastContainer = document.getElementById('toast-container');
 
-//Submit data to google sheet
-document.getElementById("vitA").addEventListener("submit", async function(event) {
-    event.preventDefault();
+        // Modal references
+        const successModal = document.getElementById('successModal');
+        const modalOkBtn = document.getElementById('modalOkBtn');
+        const errorModal = document.getElementById('errorModal');
+        const errorModalMsg = document.getElementById('errorModalMsg');
+        const errorModalCloseBtn = document.getElementById('errorModalCloseBtn');
+        let errorFocusTarget = null;
 
-    
-   
-    showMessage("⏳ Submitting your report...", "info");
+        // Form Fields
+        const yearSelect = document.getElementById('report_year');
+        const monthSelect = document.getElementById('report_month');
+        const roundField = document.getElementById('report_round');
 
-    const formData = new FormData(event.target);
-    const url = "https://script.google.com/macros/s/AKfycbwytSF2YM74TnFMOmvuZ4PAQBCpdU2xLawDI0gomDTeesGVWthzHooLA1VzLlTQv4HK/exec";
+        // Age Inputs
+        const ageInputs = [
+            { due: 'age_9_12_due', rec: 'age_9_12_rec' },
+            { due: 'age_12_24_due', rec: 'age_12_24_rec' },
+            { due: 'age_24_36_due', rec: 'age_24_36_rec' },
+            { due: 'age_36_60_due', rec: 'age_36_60_rec' }
+        ];
+        const totalDueField = document.getElementById('total_due');
+        const totalRecField = document.getElementById('total_rec');
 
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            body: formData,
+        // Populate Years and Months dynamically
+        function populateDates() {
+            const yearPlaceholder = document.createElement('option');
+            yearPlaceholder.value = "";
+            yearPlaceholder.textContent = "বছর নির্বাচন করুন..";
+            yearPlaceholder.disabled = true;
+            yearPlaceholder.selected = true;
+            yearSelect.appendChild(yearPlaceholder);
+
+            const currentYear = new Date().getFullYear();
+            for (let y = currentYear + 5; y >= 2026; y--) {
+                const option = document.createElement('option');
+                option.value = y;
+                option.textContent = y;
+                yearSelect.appendChild(option);
+            }
+
+            const months = [
+                { eng: "January", bng: "জানুয়ারি" },
+                { eng: "February", bng: "ফেব্রুয়ারি" },
+                { eng: "March", bng: "মার্চ" },
+                { eng: "April", bng: "এপ্রিল" },
+                { eng: "May", bng: "মে" },
+                { eng: "June", bng: "জুন" },
+                { eng: "July", bng: "জুলাই" },
+                { eng: "August", bng: "আগস্ট" },
+                { eng: "September", bng: "সেপ্টেম্বর" },
+                { eng: "October", bng: "অক্টোবর" },
+                { eng: "November", bng: "নভেম্বর" },
+                { eng: "December", bng: "ডিসেম্বর" }
+            ];
+
+            const monthPlaceholder = document.createElement('option');
+            monthPlaceholder.value = "";
+            monthPlaceholder.textContent = "মাস নির্বাচন করুন..";
+            monthPlaceholder.disabled = true;
+            monthPlaceholder.selected = true;
+            monthSelect.appendChild(monthPlaceholder);
+
+            months.forEach(m => {
+                const option = document.createElement('option');
+                option.value = m.eng;
+                option.textContent = m.bng;
+                monthSelect.appendChild(option);
+            });
+        }
+
+        // 1. Auto-Calculate Round: Month,Year
+        function updateRound() {
+            if (monthSelect.value && yearSelect.value) {
+                roundField.value = `${monthSelect.value},${yearSelect.value}`;
+            } else {
+                roundField.value = "";
+            }
+        }
+
+        yearSelect.addEventListener('change', updateRound);
+        monthSelect.addEventListener('change', updateRound);
+
+        // 2. Real-Time Totals Summation
+        function updateTotals() {
+            let sumDue = 0;
+            let sumRec = 0;
+
+            ageInputs.forEach(group => {
+                const dueVal = parseInt(document.getElementById(group.due).value) || 0;
+                const recVal = parseInt(document.getElementById(group.rec).value) || 0;
+                sumDue += dueVal;
+                sumRec += recVal;
+            });
+
+            totalDueField.value = sumDue;
+            totalRecField.value = sumRec;
+        }
+
+        // Attach listeners for data inputs and validation borders
+        ageInputs.forEach(group => {
+            const dueInput = document.getElementById(group.due);
+            const recInput = document.getElementById(group.rec);
+
+            const checkGroupValidation = () => {
+                updateTotals();
+                const dueVal = parseInt(dueInput.value) || 0;
+                const recVal = parseInt(recInput.value) || 0;
+                if (recVal > dueVal) {
+                    recInput.classList.add('border-rose-500', 'text-rose-600', 'focus:ring-rose-500/20', 'focus:border-rose-500');
+                    recInput.classList.remove('border-slate-300', 'text-slate-900', 'focus:ring-indigo-500/20', 'focus:border-indigo-500');
+                } else {
+                    recInput.classList.remove('border-rose-500', 'text-rose-600', 'focus:ring-rose-500/20', 'focus:border-rose-500');
+                    recInput.classList.add('border-slate-300', 'text-slate-900', 'focus:ring-indigo-500/20', 'focus:border-indigo-500');
+                }
+            };
+
+            dueInput.addEventListener('input', checkGroupValidation);
+            recInput.addEventListener('input', checkGroupValidation);
         });
 
-        if (response.ok) {
-            showMessage("✅ Submitted successfully!", "success");
-            event.target.reset();
-            
-        } else {
-            throw new Error("Server responded with an error");
+        // 3. Reset Form handler
+        function resetForm() {
+            reportForm.reset();
+
+            // Set defaults to current date
+            const d = new Date();
+            yearSelect.value = d.getFullYear();
+
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            monthSelect.value = monthNames[d.getMonth()];
+
+            updateRound();
+            updateTotals();
         }
-    } catch (error) {
-        showMessage("❌ Submission failed! Please try again.", "error");
-        console.error("Submission error:", error);
-    }
-});
 
+        resetBtn.addEventListener('click', resetForm);
 
-// ✅ Modern centered message popup with overlay
-function showMessage(message, type = "info") {
-    // Create overlay
-    let overlay = document.createElement("div");
-    overlay.className = "popup-overlay";
+        // Error Modal control functions
+        function showErrorModal(message, focusTarget = null) {
+            errorModalMsg.textContent = message;
+            errorFocusTarget = focusTarget;
+            errorModal.classList.remove('hidden');
+            errorModal.classList.add('flex');
+        }
 
-    // Create message box
-    let msgBox = document.createElement("div");
-    msgBox.textContent = message;
-    msgBox.className = `popup-message ${type}`;
+        errorModalCloseBtn.addEventListener('click', () => {
+            errorModal.classList.remove('flex');
+            errorModal.classList.add('hidden');
+            if (errorFocusTarget) {
+                errorFocusTarget.focus();
+            }
+        });
 
-    // Add overlay and message box to body
-    overlay.appendChild(msgBox);
-    document.body.appendChild(overlay);
+        // 4. Dynamic Slide-in Toast Error Notification
+        function showToast(message, type = 'error') {
+            const toast = document.createElement('div');
+            toast.className = `flex items-center p-4 w-full text-slate-700 bg-white rounded-xl shadow-lg border-l-4 border-rose-500 transition-all duration-300 transform translate-x-full opacity-0`;
 
-   
-    // Fade-in
-    setTimeout(() => {
-        overlay.classList.add("show");
-        msgBox.classList.add("show");
-    }, 10);
+            const icon = `<svg class="w-5 h-5 text-rose-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>`;
 
-    setTimeout(() => {
-        msgBox.classList.remove("show");
-        overlay.classList.remove("show");
-        setTimeout(() => {
-            overlay.remove();
-            // Redirect after message disappears
-            window.location.href = "Index.html";
-        }, 500);
-    }, 3000);
-}
+            toast.innerHTML = `
+                <div class="inline-flex shrink-0 justify-center items-center w-8 h-8 rounded-lg">
+                    ${icon}
+                </div>
+                <div class="ml-3 text-sm font-semibold text-slate-700">${message}</div>
+            `;
 
-</script>
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+                toast.classList.add('translate-x-0', 'opacity-100');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-0', 'opacity-100');
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4500);
+        }
+
+        // 5. Submit Form via Supabase API
+        reportForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+                showToast('Please configure your Supabase URL and Anon Key in index.html', 'error');
+                return;
+            }
+
+            // Client-side validation: rec cannot be greater than due
+            for (const group of ageInputs) {
+                const dueInput = document.getElementById(group.due);
+                const recInput = document.getElementById(group.rec);
+                const dueVal = parseInt(dueInput.value) || 0;
+                const recVal = parseInt(recInput.value) || 0;
+
+                if (recVal > dueVal) {
+                    showErrorModal('কতজন শিশুকে ভিটামিন A দেওয়া হয়েছে তা অবশ্যই যোগ্য শিশুর সংখ্যা থেকে কম বা সমান হতে হবে।', recInput);
+                    return; // Stop form submission
+                }
+            }
+
+            // Prevent duplicate submits
+            if (submitBtn.disabled) return;
+
+            submitBtn.disabled = true;
+            loadingSpinner.classList.remove('hidden');
+            btnText.textContent = 'জমা হচ্ছে...';
+
+            const payload = {
+                report_year: parseInt(yearSelect.value),
+                report_month: monthSelect.value,
+                report_round: roundField.value,
+                reporting_unit: document.getElementById('reporting_unit').value,
+                age_9_12_due: parseInt(document.getElementById('age_9_12_due').value) || 0,
+                age_9_12_rec: parseInt(document.getElementById('age_9_12_rec').value) || 0,
+                age_12_24_due: parseInt(document.getElementById('age_12_24_due').value) || 0,
+                age_12_24_rec: parseInt(document.getElementById('age_12_24_rec').value) || 0,
+                age_24_36_due: parseInt(document.getElementById('age_24_36_due').value) || 0,
+                age_24_36_rec: parseInt(document.getElementById('age_24_36_rec').value) || 0,
+                age_36_60_due: parseInt(document.getElementById('age_36_60_due').value) || 0,
+                age_36_60_rec: parseInt(document.getElementById('age_36_60_rec').value) || 0,
+                total_due: parseInt(totalDueField.value) || 0,
+                total_rec: parseInt(totalRecField.value) || 0
+            };
+
+            try {
+                // Check for duplicate submission first
+                const { data: existingRecords, error: checkError } = await db
+                    .from('vitamin_a_reports')
+                    .select('id')
+                    .eq('reporting_unit', payload.reporting_unit)
+                    .eq('report_round', payload.report_round);
+                
+                if (checkError) throw checkError;
+
+                if (existingRecords && existingRecords.length > 0) {
+                    showErrorModal('এই রাউন্ডের জন্য এই স্বাস্থ্যকেন্দ্রের ডেটা ইতিমধ্যে জমা দেওয়া হয়েছে। (Data for this SC and round already submitted.)');
+                    submitBtn.disabled = false;
+                    loadingSpinner.classList.add('hidden');
+                    btnText.textContent = 'রিপোর্ট জমা দিন';
+                    return;
+                }
+
+                const { data, error } = await db
+                    .from('vitamin_a_reports')
+                    .insert([payload]);
+
+                if (error) {
+                    console.error("Supabase insert error:", error);
+                    showToast(error.message || 'সাবমিট করতে ব্যর্থ হয়েছে।', 'error');
+                } else {
+                    // Show confirmation modal on success
+                    successModal.classList.remove('hidden');
+                    successModal.classList.add('flex');
+                    resetForm();
+                }
+            } catch (error) {
+                console.error(error);
+                showToast('রিপোর্ট সাবমিট করার সময় নেটওয়ার্ক ত্রুটি ঘটেছে।', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                loadingSpinner.classList.add('hidden');
+                btnText.textContent = 'রিপোর্ট জমা দিন';
+            }
+        });
+
+        // 6. Modal OK Button - Close Modal (modified from original which did a redirect)
+        modalOkBtn.addEventListener('click', () => {
+            successModal.classList.remove('flex');
+            successModal.classList.add('hidden');
+            // If you want to redirect after success, uncomment below:
+             window.location.href = "Index.html";
+        });
+
+        // Initialize defaults
+        document.addEventListener('DOMContentLoaded', () => {
+            populateDates();
+            updateRound();
+            updateTotals();
+        });
+    </script>
 </body>
+
 </html>
