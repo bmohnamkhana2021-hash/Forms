@@ -21,7 +21,7 @@
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&family=Anek+Bangla:wght@100..800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&family=Anek+Bangla:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
     <script>
@@ -58,9 +58,12 @@
         }
 
         .font-bengali {
-            font-family: 'Anek Bangla', sans-serif;
+            font-family: 'Anek Bangla', 'Hind Siliguri', sans-serif;
             line-height: 1.6;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.005em;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .nav-link {
@@ -195,9 +198,13 @@
 <body class="h-full">
     <div class="flex flex-col items-center p-4">
         <!-- Bengali Header -->
-        <header class="w-full max-w-xl mb-6">
-            <h1 class="font-bengali font-extrabold text-2xl text-slate-900 text-center">মাসিক প্রসব সংক্রান্ত রিপোর্ট
+        <header class="w-full max-w-xl mb-6 text-center">
+            <h1
+                class="font-bengali font-extrabold text-3xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 bg-clip-text text-transparent pb-1 tracking-tight">
+                মাসিক প্রসব সংক্রান্ত রিপোর্ট
             </h1>
+            <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] mt-1.5">Monthly Delivery Coverage
+                Report</p>
         </header>
 
         <!-- Main Form Card -->
@@ -267,7 +274,8 @@
 
                             <button type="button" onclick="goToPage(2)"
                                 class="w-full bg-slate-900 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-slate-200 btn-hover flex items-center justify-center gap-2.5 group">
-                                <span class="font-bengali text-base">রিপোর্ট এন্ট্রি করুন</span>
+                                <span class="font-bengali font-semibold text-base tracking-wide">রিপোর্ট এন্ট্রি
+                                    করুন</span>
                                 <i data-lucide="chevron-right"
                                     class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
                             </button>
@@ -311,7 +319,7 @@
                                     <label
                                         class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Reporting
                                         Month</label>
-                                    <select name="month" id="month-select"
+                                    <select name="reporting_month" id="month-select"
                                         class="w-full bg-slate-50 border border-slate-100 rounded-xl py-2.5 px-3.5 text-xs font-semibold outline-none input-focus-ring transition-all"
                                         required>
                                         <option value="">Select Month</option>
@@ -333,7 +341,7 @@
                                     <label
                                         class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Reporting
                                         Year</label>
-                                    <select name="year" id="year-select"
+                                    <select name="reporting_year" id="year-select"
                                         class="w-full bg-slate-50 border border-slate-100 rounded-xl py-2.5 px-3.5 text-xs font-semibold outline-none input-focus-ring transition-all"
                                         required>
                                     </select>
@@ -477,9 +485,9 @@
                         class="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-4 success-anim">
                         <i data-lucide="check" class="w-8 h-8 stroke-[3]"></i>
                     </div>
-                    <h3 class="font-outfit font-black text-2xl text-slate-900 mb-1">Report Saved</h3>
-                    <p class="text-slate-400 text-xs mb-6 leading-relaxed max-w-[200px]">Your data has been successfully
-                        stored in the BPMU database.</p>
+                    <h3 class="font-outfit font-black text-2xl text-slate-900 mb-1">সাফল্য!!</h3>
+                    <p class="font-bengali text-slate-500 text-sm mb-6 leading-relaxed max-w-[280px] font-medium">আপনার
+                        রিপোর্ট সফলভাবে জমা দেওয়া হয়েছে।</p>
                     <button onclick="window.location.href='https://forms-container.netlify.app'"
                         class="px-10 py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all active:scale-95 shadow-lg shadow-emerald-100 text-sm">
                         Ok
@@ -722,18 +730,19 @@
             const formData = new FormData(entryForm);
             const data = Object.fromEntries(formData.entries());
             const apiData = {
-                month: data.month, year: data.year,
+                reporting_month: data.reporting_month,
+                reporting_year: parseInt(data.reporting_year) || 0,
                 gp: document.getElementById('gp-select').value,
                 facility: document.getElementById('facility-select').value,
-                delivery_home: data.delivery_home,
-                delivery_govt: data.delivery_govt,
-                delivery_private: data.delivery_private,
-                normal_delivery: data.normal_delivery,
-                cs_delivery: data.cs_delivery,
-                total_delivery: parseInt(data.delivery_home) + parseInt(data.delivery_govt) + parseInt(data.delivery_private),
-                live_birth: data.live_birth,
-                still_birth: data.still_birth,
-                total_abortion: data.total_abortion
+                delivery_home: parseInt(data.delivery_home) || 0,
+                delivery_govt: parseInt(data.delivery_govt) || 0,
+                delivery_private: parseInt(data.delivery_private) || 0,
+                normal_delivery: parseInt(data.normal_delivery) || 0,
+                cs_delivery: parseInt(data.cs_delivery) || 0,
+                total_delivery: (parseInt(data.delivery_home) || 0) + (parseInt(data.delivery_govt) || 0) + (parseInt(data.delivery_private) || 0),
+                live_birth: parseInt(data.live_birth) || 0,
+                still_birth: parseInt(data.still_birth) || 0,
+                total_abortion: parseInt(data.total_abortion) || 0
             };
 
             try {
