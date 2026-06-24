@@ -198,17 +198,19 @@
 <body class="h-full">
     <div class="flex flex-col items-center p-4">
         <!-- Bengali Header -->
-        <header class="w-full max-w-xl mb-6 text-center">
-            <h1
-                class="font-bengali font-extrabold text-3xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 bg-clip-text text-transparent pb-1 tracking-tight">
-                মাসিক প্রসব সংক্রান্ত রিপোর্ট
-            </h1>
-            <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] mt-1.5">Monthly Delivery Coverage
-                Report</p>
+        <header class="w-full max-w-xl mb-6 flex items-center justify-between">
+            <div class="text-left">
+                <h1
+                    class="font-bengali font-extrabold text-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 bg-clip-text text-transparent pb-1 tracking-tight">
+                    মাসিক প্রসব সংক্রান্ত রিপোর্ট
+                </h1>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mt-0.5">Monthly Delivery
+                    Coverage Report</p>
+            </div>
         </header>
 
         <!-- Main Form Card -->
-        <main class="w-full max-w-xl">
+        <main id="data-entry-container" class="w-full max-w-xl">
             <div class="glass-card rounded-3xl overflow-hidden relative">
 
                 <!-- Page 1: History & Selection -->
@@ -494,6 +496,26 @@
                     </button>
                 </div>
 
+                <!-- Warning Overlay -->
+                <div id="warning-overlay"
+                    class="absolute inset-0 bg-white/95 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-8 text-center hidden animate-in fade-in duration-200">
+                    <div
+                        class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-4 success-anim">
+                        <i data-lucide="alert-triangle" class="w-8 h-8 stroke-[2.5] animate-pulse"></i>
+                    </div>
+                    <h3 class="font-outfit font-black text-2xl text-slate-900 mb-1">সাবধান!!</h3>
+                    <p class="font-outfit font-bold text-xs uppercase tracking-widest text-amber-600 mb-2">ডুপ্লিকেট
+                        রিপোর্ট ব্লক করা হয়েছে</p>
+                    <p id="warning-text"
+                        class="font-bengali text-slate-600 text-sm mb-6 leading-relaxed max-w-[340px] font-medium">
+                        এই সময়ের জন্য এই সাব-সেন্টারের রিপোর্ট ইতিপূর্বেই জমা দেওয়া হয়েছে।
+                    </p>
+                    <button onclick="closeWarningOverlay()" type="button"
+                        class="px-10 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl transition-all active:scale-95 shadow-lg shadow-amber-100 text-sm">
+                        Ok
+                    </button>
+                </div>
+
             </div>
         </main>
     </div>
@@ -745,6 +767,31 @@
                 total_abortion: parseInt(data.total_abortion) || 0
             };
 
+            // Check for duplicate submission
+            try {
+                const history = await apiFetch('get_facility_history', {
+                    facility: apiData.facility,
+                    year: apiData.reporting_year
+                });
+
+                if (Array.isArray(history)) {
+                    const duplicate = history.find(row => row.reporting_month === apiData.reporting_month);
+                    if (duplicate) {
+                        const warningTextEl = document.getElementById('warning-text');
+                        if (warningTextEl) {
+                            warningTextEl.innerHTML = `Sub-Center <strong>"${apiData.facility}"</strong> has already submitted a report for <strong>${apiData.reporting_month} ${apiData.reporting_year}</strong>.<br><br>Duplicate submissions are not allowed.`;
+                        }
+                        document.getElementById('warning-overlay').classList.remove('hidden');
+                        lucide.createIcons();
+                        btnText.textContent = originalText;
+                        btn.disabled = false;
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.error("Duplicate check failed:", err);
+            }
+
             try {
                 const response = await apiPost('save_report', apiData);
                 if (response.status === 'success') {
@@ -761,6 +808,10 @@
                 btn.disabled = false;
             }
         });
+
+        function closeWarningOverlay() {
+            document.getElementById('warning-overlay').classList.add('hidden');
+        }
     </script>
 </body>
 
