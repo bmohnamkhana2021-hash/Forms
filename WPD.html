@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>World Population Fortnight 2026 - Data Entry</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Supabase SDK from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Tailwind CSS (v3 CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        pink: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 1.5s linear infinite',
+                        'slide-up': 'slideUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Loader */
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            display: none;
+        }
+
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fbcfe8;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f472b6;
+        }
+
+        /* Removing arrows from number inputs for a cleaner look on mobile */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Select dropdown styling */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-pink-50 text-slate-800 min-h-screen p-2 sm:p-4 md:p-8 flex justify-center items-start overflow-x-hidden w-full">
+
+    <div
+        class="w-full max-w-5xl bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 shadow-xl shadow-pink-100/50 animate-slide-up border border-pink-50">
+
+        <div class="text-center mb-6 sm:mb-10">
+            <h1
+                class="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-400 bg-clip-text text-transparent mb-1 sm:mb-2 leading-tight">
+                World Population Fortnight
+            </h1>
+            <p class="text-sm sm:text-base text-slate-500 font-medium">Service Delivery Reporting (11-18 July)</p>
+        </div>
+
+        <form id="wpfForm" class="space-y-4 sm:space-y-6 md:space-y-8">
+
+            <!-- 1. Identification -->
+            <div
+                class="bg-pink-50/40 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-pink-100 transition-all hover:shadow-md hover:border-pink-200">
+                <h2 class="text-base sm:text-lg font-semibold text-pink-700 border-b border-pink-200 pb-2 mb-4">1.
+                    Identification</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="sub_center" class="text-xs sm:text-sm font-medium text-slate-700">Sub Center
+                            Name</label>
+                        <select id="sub_center" name="sub_center" required
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px] cursor-pointer">
+                            <option value="" disabled selected>Select Facility</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="date_of_reporting" class="text-xs sm:text-sm font-medium text-slate-700">Date of
+                            Reporting</label>
+                        <input type="date" id="date_of_reporting" name="date_of_reporting" required
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Motivation -->
+            <div
+                class="bg-pink-50/40 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-pink-100 transition-all hover:shadow-md hover:border-pink-200">
+                <h2 class="text-base sm:text-lg font-semibold text-pink-700 border-b border-pink-200 pb-2 mb-4">2.
+                    Motivation for Sterilization</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="male_motivated_sterilization"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Male Motivated (NSV)</label>
+                        <input type="number" id="male_motivated_sterilization" name="male_motivated_sterilization"
+                            min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="female_motivated_sterilization"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Female Motivated</label>
+                        <input type="number" id="female_motivated_sterilization" name="female_motivated_sterilization"
+                            min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Services Conducted -->
+            <div
+                class="bg-pink-50/40 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-pink-100 transition-all hover:shadow-md hover:border-pink-200">
+                <h2 class="text-base sm:text-lg font-semibold text-pink-700 border-b border-pink-200 pb-2 mb-4">3.
+                    Sterilization & IUCD Services Conducted</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="male_sterilization_conducted"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Male Sterilization (NSV)</label>
+                        <input type="number" id="male_sterilization_conducted" name="male_sterilization_conducted"
+                            min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="female_sterilization_conducted"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Female Sterilization</label>
+                        <input type="number" id="female_sterilization_conducted" name="female_sterilization_conducted"
+                            min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="interval_iucd_insertions"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Interval IUCD Insertions</label>
+                        <input type="number" id="interval_iucd_insertions" name="interval_iucd_insertions" min="0"
+                            value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="ppiucd_insertions" class="text-xs sm:text-sm font-medium text-slate-700">PPIUCD
+                            Insertions</label>
+                        <input type="number" id="ppiucd_insertions" name="ppiucd_insertions" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="paiucd_insertions" class="text-xs sm:text-sm font-medium text-slate-700">PAIUCD
+                            Insertions</label>
+                        <input type="number" id="paiucd_insertions" name="paiucd_insertions" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. MPA -->
+            <div
+                class="bg-pink-50/40 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-pink-100 transition-all hover:shadow-md hover:border-pink-200">
+                <h2 class="text-base sm:text-lg font-semibold text-pink-700 border-b border-pink-200 pb-2 mb-4">4.
+                    Injectable Contraceptive MPA (Antara)</h2>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="mpa_dose_1" class="text-xs sm:text-sm font-medium text-slate-700">Dose 1</label>
+                        <input type="number" id="mpa_dose_1" name="mpa_dose_1" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="mpa_dose_2" class="text-xs sm:text-sm font-medium text-slate-700">Dose 2</label>
+                        <input type="number" id="mpa_dose_2" name="mpa_dose_2" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="mpa_dose_3" class="text-xs sm:text-sm font-medium text-slate-700">Dose 3</label>
+                        <input type="number" id="mpa_dose_3" name="mpa_dose_3" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="mpa_dose_4" class="text-xs sm:text-sm font-medium text-slate-700">Dose 4</label>
+                        <input type="number" id="mpa_dose_4" name="mpa_dose_4" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Commodities -->
+            <div
+                class="bg-pink-50/40 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-pink-100 transition-all hover:shadow-md hover:border-pink-200">
+                <h2 class="text-base sm:text-lg font-semibold text-pink-700 border-b border-pink-200 pb-2 mb-4 sm:mb-6">
+                    5. Commodities Distributed</h2>
+
+                <h3 class="text-sm sm:text-md font-semibold text-pink-500 mb-3 sm:mb-4 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-pink-400"></span> Condoms (Pieces)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 sm:mb-8">
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="condoms_asha" class="text-xs sm:text-sm font-medium text-slate-700">ASHA</label>
+                        <input type="number" id="condoms_asha" name="condoms_asha" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="condoms_facility"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Facility</label>
+                        <input type="number" id="condoms_facility" name="condoms_facility" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="condoms_self_care" class="text-xs sm:text-sm font-medium text-slate-700">Self
+                            care</label>
+                        <input type="number" id="condoms_self_care" name="condoms_self_care" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="condoms_outreach"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Outreach</label>
+                        <input type="number" id="condoms_outreach" name="condoms_outreach" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                </div>
+
+                <h3 class="text-sm sm:text-md font-semibold text-pink-500 mb-3 sm:mb-4 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-pink-400"></span> Mala N (Strips)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="mala_n_asha" class="text-xs sm:text-sm font-medium text-slate-700">ASHA</label>
+                        <input type="number" id="mala_n_asha" name="mala_n_asha" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="mala_n_facility"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Facility</label>
+                        <input type="number" id="mala_n_facility" name="mala_n_facility" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2 col-span-2 sm:col-span-1">
+                        <label for="mala_n_outreach"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Outreach</label>
+                        <input type="number" id="mala_n_outreach" name="mala_n_outreach" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                </div>
+
+                <h3 class="text-sm sm:text-md font-semibold text-pink-500 mb-3 sm:mb-4 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-pink-400"></span> Chayya (Strips)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="chayya_asha" class="text-xs sm:text-sm font-medium text-slate-700">ASHA</label>
+                        <input type="number" id="chayya_asha" name="chayya_asha" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="chayya_facility"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Facility</label>
+                        <input type="number" id="chayya_facility" name="chayya_facility" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2 col-span-2 sm:col-span-1">
+                        <label for="chayya_outreach"
+                            class="text-xs sm:text-sm font-medium text-slate-700">Outreach</label>
+                        <input type="number" id="chayya_outreach" name="chayya_outreach" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                </div>
+
+                <h3 class="text-sm sm:text-md font-semibold text-pink-500 mb-3 sm:mb-4 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-pink-400"></span> ECP Pills
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="ecp_asha" class="text-xs sm:text-sm font-medium text-slate-700">ASHA</label>
+                        <input type="number" id="ecp_asha" name="ecp_asha" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="ecp_facility" class="text-xs sm:text-sm font-medium text-slate-700">Facility</label>
+                        <input type="number" id="ecp_facility" name="ecp_facility" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="ecp_self_care" class="text-xs sm:text-sm font-medium text-slate-700">Self
+                            care</label>
+                        <input type="number" id="ecp_self_care" name="ecp_self_care" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                    <div class="flex flex-col gap-1 sm:gap-2">
+                        <label for="ecp_outreach" class="text-xs sm:text-sm font-medium text-slate-700">Outreach</label>
+                        <input type="number" id="ecp_outreach" name="ecp_outreach" min="0" value="0"
+                            class="w-full bg-white border border-slate-200 text-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl focus:ring-2 sm:focus:ring-4 focus:ring-pink-100 focus:border-pink-400 transition-all outline-none text-[16px]">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn"
+                class="w-full bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 text-white font-semibold py-3.5 sm:py-4 px-6 sm:px-8 rounded-xl sm:rounded-2xl shadow-lg shadow-pink-200 transition-all transform hover:-translate-y-1 flex justify-center items-center gap-3 text-sm sm:text-base">
+                <span>Submit Report</span>
+                <div class="loader animate-spin-slow" id="submitLoader"></div>
+            </button>
+        </form>
+    </div>
+
+    <!-- Modal Notification -->
+    <div id="toast" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm px-4 transition-opacity">
+        <div class="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl transform transition-transform scale-95 flex flex-col items-center text-center">
+            <div id="toastIconContainer" class="w-16 h-16 rounded-full flex items-center justify-center mb-4 border-4">
+                <svg id="toastIcon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+            </div>
+            <h3 id="toastTitle" class="text-xl font-bold text-slate-800 mb-2">Success</h3>
+            <p id="toastMessage" class="text-slate-500 text-sm sm:text-base mb-6">Submission successful!</p>
+            <button type="button" onclick="closeToast()" class="w-full py-3 px-6 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-medium transition-colors">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Populate facilities IMMEDIATELY before anything else runs
+        const subCenterSelect = document.getElementById('sub_center');
+        const facilities = [
+            "Amarabati", "Bagdanga", "Baliara New", "Baliara Old",
+            "Bijoybati", "Bishalaxmipur", "Budhakhali", "Dakshin Chandanpiri",
+            "Dakshin Chandranagar", "Dakshin Durgapur", "Dakshin Shibrampur",
+            "Debnagar", "Debnibas", "Dwariknagar", "Fatikpur", "Ganeshnagar East", "Ganeshnagar West",
+            "Haripur", "Iswaripur", "Kusumtala", "Maharajganj",
+            "Moushuni 1st Gheri", "Namkhana I", "Namkhana II", "Nandabhanga",
+            "Narayanpur Part", "Narayanpur PHC SC", "Patibunia",
+            "Radhanagar", "Rajnagar", "Rajnagar Srinathgram I", "Rajnagar Srinathgram II",
+            "Shibnagar Abad I", "Shibnagar Abad II", "Shibpur", "Uttar Chandanpiri",
+            "Uttar Shibrampur"
+        ];
+
+        subCenterSelect.innerHTML = '<option value="" disabled selected>Select Facility</option>';
+        facilities.forEach(scName => {
+            const option = document.createElement('option');
+            option.value = scName;
+            option.textContent = scName;
+            subCenterSelect.appendChild(option);
+        });
+
+        // Global error handler to catch script loading issues
+        window.onerror = function (msg, url, lineNo, columnNo, error) {
+            console.error("JavaScript Error:\n" + msg + "\nLine: " + lineNo);
+            return false;
+        };
+
+        const supabaseUrl = 'https://kijqcmumynutyhodxjwo.supabase.co';
+        const supabaseKey = 'sb_publishable_3vIQeWE4irMp3ni9vSw7fg_2sgzjurY';
+
+        if (!window.supabase) {
+            console.error("Supabase SDK failed to load from CDN! Form submissions will not work.");
+        } else {
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+            const form = document.getElementById('wpfForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitLoader = document.getElementById('submitLoader');
+            const btnText = submitBtn.querySelector('span');
+            const toast = document.getElementById('toast');
+
+            // Default Date to today
+            document.getElementById('date_of_reporting').valueAsDate = new Date();
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                btnText.textContent = 'Submitting...';
+                submitLoader.style.display = 'block';
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+                submitBtn.classList.remove('hover:-translate-y-1');
+
+                const formData = new FormData(form);
+                const payload = {};
+
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'sub_center' || key === 'date_of_reporting') {
+                        payload[key] = value;
+                    } else {
+                        payload[key] = parseInt(value, 10) || 0;
+                    }
+                }
+
+                try {
+                    const { data, error } = await supabase
+                        .from('wpf_service_delivery_subcenter')
+                        .insert([payload]);
+
+                    if (error) throw error;
+
+                    showToast('Form submitted successfully!', 'success');
+                    form.reset();
+                    // Reset date to today after submit
+                    document.getElementById('date_of_reporting').valueAsDate = new Date();
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    showToast('Failed to submit form. Check Supabase table.', 'error');
+                } finally {
+                    btnText.textContent = 'Submit Report';
+                    submitLoader.style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                    submitBtn.classList.add('hover:-translate-y-1');
+                }
+            });
+
+            function showToast(message, type) {
+                const toast = document.getElementById('toast');
+                const toastMessage = document.getElementById('toastMessage');
+                const toastIcon = document.getElementById('toastIcon');
+                const toastIconContainer = document.getElementById('toastIconContainer');
+                const toastTitle = document.getElementById('toastTitle');
+    
+                // Reset styling
+                toastIconContainer.className = 'w-16 h-16 rounded-full flex items-center justify-center mb-4 border-4';
+                
+                if (type === 'success') {
+                    toastIconContainer.classList.add('bg-emerald-50', 'border-emerald-100', 'text-emerald-500');
+                    toastIcon.innerHTML = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
+                    toastTitle.textContent = 'Success!';
+                } else {
+                    toastIconContainer.classList.add('bg-rose-50', 'border-rose-100', 'text-rose-500');
+                    toastIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>';
+                    toastTitle.textContent = 'Error';
+                }
+    
+                toastMessage.textContent = message;
+                
+                // Show modal
+                toast.classList.remove('hidden');
+                toast.classList.add('flex');
+            }
+
+            // Expose closeToast to global scope since onclick uses it
+            window.closeToast = function() {
+                const toast = document.getElementById('toast');
+                const toastTitle = document.getElementById('toastTitle');
+                
+                // If it was a successful submission, redirect to index.html
+                if (toastTitle.textContent === 'Success!') {
+                    window.location.href = 'index.html';
+                } else {
+                    // Otherwise (like an error), just close the modal so they can fix it
+                    toast.classList.add('hidden');
+                    toast.classList.remove('flex');
+                }
+            };
+        } // Closing the else block
+    </script>
+</body>
+
+</html>
