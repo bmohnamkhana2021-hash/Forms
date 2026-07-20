@@ -8,7 +8,7 @@
 
     <!-- Meta Tags -->
     <meta name="description" content="Secure and professional data entry portal for maternal delivery reporting.">
-    <meta name="theme-color" content="#14b8a6">
+    <meta name="theme-color" content="#f8dce5">
 
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -29,10 +29,10 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#14b8a6', // Teal
-                        secondary: '#ff7f50', // Coral
-                        accent: '#ff7f50',
-                        offwhite: '#fcfcf9',
+                        primary: '#f4a8bb', // Light pink
+                        secondary: '#f8dce5', // Soft pink
+                        accent: '#f4a8bb',
+                        offwhite: '#fffdfd',
                         slate: {
                             900: '#0f172a',
                             800: '#1e293b',
@@ -48,7 +48,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--offwhite, #fcfcf9);
+            background-color: var(--offwhite, #fffdfd);
             color: #334155;
             overflow-x: hidden;
         }
@@ -78,7 +78,7 @@
             left: 50%;
             width: 0;
             height: 2px;
-            background: #14b8a6;
+            background: #f4a8bb;
             transition: all 0.3s;
             transform: translateX(-50%);
         }
@@ -97,13 +97,13 @@
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(20, 184, 166, 0.1);
-            box-shadow: 0 20px 40px -15px rgba(20, 184, 166, 0.08);
+            border: 1px solid rgba(244, 168, 187, 0.18);
+            box-shadow: 0 20px 40px -15px rgba(244, 168, 187, 0.16);
         }
 
         .input-focus-ring:focus {
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
-            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(244, 168, 187, 0.14);
+            border-color: #f4a8bb;
         }
 
         .btn-hover {
@@ -112,7 +112,7 @@
 
         .btn-hover:hover {
             transform: translateY(-1px);
-            box-shadow: 0 8px 16px -4px rgba(20, 184, 166, 0.2);
+            box-shadow: 0 8px 16px -4px rgba(244, 168, 187, 0.24);
         }
 
         .step-transition {
@@ -156,7 +156,7 @@
 
         select {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2314b8a6' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f4a8bb' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 0.75rem center;
             background-size: 0.9rem;
@@ -201,7 +201,7 @@
         <header class="w-full max-w-xl mb-6 flex items-center justify-between">
             <div class="text-left">
                 <h1
-                    class="font-bengali font-extrabold text-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 bg-clip-text text-transparent pb-1 tracking-tight">
+                    class="font-bengali font-extrabold text-2xl bg-gradient-to-r from-pink-500 via-pink-400 to-rose-400 bg-clip-text text-transparent pb-1 tracking-tight">
                     মাসিক প্রসব সংক্রান্ত রিপোর্ট
                 </h1>
                 <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mt-0.5">Monthly Delivery
