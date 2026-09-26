@@ -732,18 +732,18 @@
                 msgText.textContent = errors[0];
                 msgIcon.setAttribute('data-lucide', 'alert-circle');
                 submitBtn.disabled = true;
-            } else if (totalPlaces > 0) {
+            } else if (totalPlaces === 0 && totalTypes === 0 && totalBirths === 0) {
+                msgBox.className = "p-3.5 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-800 flex items-start gap-2.5";
+                msgTitle.textContent = "Validated";
+                msgText.textContent = "Zero report accepted. Data integrity check passed.";
+                msgIcon.setAttribute('data-lucide', 'check-circle');
+                submitBtn.disabled = false;
+            } else {
                 msgBox.className = "p-3.5 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-800 flex items-start gap-2.5";
                 msgTitle.textContent = "Validated";
                 msgText.textContent = "Data integrity check passed.";
                 msgIcon.setAttribute('data-lucide', 'check-circle');
                 submitBtn.disabled = false;
-            } else {
-                msgBox.className = "p-3.5 rounded-xl border bg-slate-50 border-slate-100 text-slate-400 flex items-start gap-2.5";
-                msgTitle.textContent = "Integrity Check";
-                msgText.textContent = "Enter numbers to validate.";
-                msgIcon.setAttribute('data-lucide', 'shield-check');
-                submitBtn.disabled = true;
             }
             lucide.createIcons();
         }
