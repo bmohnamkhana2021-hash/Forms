@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Malaria Fortnightly Report - Namkhana Block</title>
+
+    <!-- Apple SF Pro & Inter Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind CSS (Play CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: [
+                            '-apple-system',
+                            'BlinkMacSystemFont',
+                            '"Plus Jakarta Sans"',
+                            '"SF Pro Text"',
+                            '"SF Pro Display"',
+                            'system-ui',
+                            'sans-serif'
+                        ],
+                    },
+                    colors: {
+                        // Light Saffron & Warm Tones
+                        saffron: {
+                            50: '#fff9f2',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                        },
+                        // Light Pink Tones
+                        iospink: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f472b6',
+                            400: '#ec4899',
+                            500: '#db2777',
+                        },
+                        // Light Mint / Green Tones
+                        iosgreen: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                        }
+                    },
+                    boxShadow: {
+                        'ios': '0 4px 24px -1px rgba(0, 0, 0, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02)',
+                        'ios-card': '0 12px 36px -4px rgba(234, 88, 12, 0.05), 0 4px 16px -2px rgba(236, 72, 153, 0.04)',
+                        'ios-float': '0 20px 45px -8px rgba(0, 0, 0, 0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        /* Hide number input spinners for clean iOS feel */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* iOS-style frosted glass effect */
+        .ios-blur {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .ios-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .ios-input {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ios-input:focus {
+            background: rgba(255, 255, 255, 0.98);
+            border-color: #fb923c;
+            box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.15);
+            outline: none;
+        }
+
+        /* Sleek custom chevron for dropdowns */
+        select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f97316' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.9rem center;
+            background-size: 1em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Smooth iOS active press */
+        .ios-press:active {
+            transform: scale(0.98);
+        }
+
+        /* Flying Mosquito Animation Styles */
+        .mosquito-swarm {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 40;
+            overflow: hidden;
+        }
+
+        .flying-mosquito {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 36px;
+            height: 30px;
+            pointer-events: none;
+            will-change: transform;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+            user-select: none;
+        }
+
+        .mosquito-wing-top {
+            transform-origin: 24px 13px;
+            animation: wingBuzzTop 0.05s infinite alternate ease-in-out;
+        }
+
+        .mosquito-wing-btm {
+            transform-origin: 24px 21px;
+            animation: wingBuzzBtm 0.05s infinite alternate ease-in-out;
+        }
+
+        @keyframes wingBuzzTop {
+            0% { transform: rotate(-30deg) scaleY(1); opacity: 0.9; }
+            100% { transform: rotate(-8deg) scaleY(0.2); opacity: 0.35; }
+        }
+
+        @keyframes wingBuzzBtm {
+            0% { transform: rotate(30deg) scaleY(1); opacity: 0.9; }
+            100% { transform: rotate(8deg) scaleY(0.2); opacity: 0.35; }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-tr from-iospink-50/70 via-saffron-50/60 to-iosgreen-50/70 min-h-screen text-slate-800 antialiased selection:bg-saffron-200 selection:text-saffron-900 flex flex-col justify-between py-4 px-3 sm:px-6 md:py-8 relative">
+
+    <!-- Flying Mosquito Swarm (Over the entire form) -->
+    <div id="mosquito-swarm" class="mosquito-swarm" aria-hidden="true">
+        <!-- Mosquito 1 -->
+        <div id="mosquito-1" class="flying-mosquito">
+            <svg viewBox="0 0 50 36" width="36" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Sharp Needle Proboscis -->
+                <line x1="38" y1="17" x2="49" y2="17" stroke="#0f172a" stroke-width="1.3" stroke-linecap="round"/>
+                <!-- Head & Compound Eye -->
+                <circle cx="35" cy="17" r="2.8" fill="#1e293b"/>
+                <circle cx="36" cy="16" r="0.9" fill="#ef4444"/>
+                <!-- Antennae -->
+                <path d="M36 15 Q40 11 44 12" stroke="#475569" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+                <path d="M36 19 Q40 23 44 22" stroke="#475569" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+                <!-- Thorax -->
+                <ellipse cx="28" cy="17" rx="4.6" ry="3.6" fill="#334155"/>
+                <!-- Striped Abdomen -->
+                <ellipse cx="16" cy="17" rx="8.5" ry="2.7" fill="#475569"/>
+                <path d="M20 14.5 V19.5 M16 14.3 V19.7 M12 14.6 V19.4 M9 15.2 V18.8" stroke="#e2e8f0" stroke-width="0.9"/>
+                <!-- Rapid Flapping Wings -->
+                <ellipse class="mosquito-wing-top" cx="25" cy="10" rx="9" ry="3.3" fill="rgba(240, 249, 255, 0.78)" stroke="#94a3b8" stroke-width="0.6"/>
+                <ellipse class="mosquito-wing-btm" cx="25" cy="24" rx="9" ry="3.3" fill="rgba(240, 249, 255, 0.78)" stroke="#94a3b8" stroke-width="0.6"/>
+                <!-- 6 Long Slender Bent Legs -->
+                <path d="M30 14 Q27 6 22 4" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M28 14 Q23 4 15 3" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M25 14 Q19 5 8 5" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M30 20 Q27 28 22 30" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M28 20 Q23 30 15 31" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M25 20 Q19 29 8 29" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+            </svg>
+        </div>
+        <!-- Mosquito 2 (Complementary flyer) -->
+        <div id="mosquito-2" class="flying-mosquito">
+            <svg viewBox="0 0 50 36" width="30" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="38" y1="17" x2="49" y2="17" stroke="#0f172a" stroke-width="1.3" stroke-linecap="round"/>
+                <circle cx="35" cy="17" r="2.8" fill="#1e293b"/>
+                <circle cx="36" cy="16" r="0.9" fill="#dc2626"/>
+                <path d="M36 15 Q40 11 44 12" stroke="#475569" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+                <path d="M36 19 Q40 23 44 22" stroke="#475569" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+                <ellipse cx="28" cy="17" rx="4.6" ry="3.6" fill="#334155"/>
+                <ellipse cx="16" cy="17" rx="8.5" ry="2.7" fill="#475569"/>
+                <path d="M20 14.5 V19.5 M16 14.3 V19.7 M12 14.6 V19.4" stroke="#e2e8f0" stroke-width="0.9"/>
+                <ellipse class="mosquito-wing-top" cx="25" cy="10" rx="9" ry="3.3" fill="rgba(240, 249, 255, 0.78)" stroke="#94a3b8" stroke-width="0.6"/>
+                <ellipse class="mosquito-wing-btm" cx="25" cy="24" rx="9" ry="3.3" fill="rgba(240, 249, 255, 0.78)" stroke="#94a3b8" stroke-width="0.6"/>
+                <path d="M30 14 Q27 6 22 4" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M28 14 Q23 4 15 3" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M25 14 Q19 5 8 5" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M30 20 Q27 28 22 30" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M28 20 Q23 30 15 31" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+                <path d="M25 20 Q19 29 8 29" stroke="#1e293b" stroke-width="0.8" fill="none"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Subtle Pastel Ambient Lights -->
+    <div class="fixed top-0 left-1/4 -translate-x-1/2 w-96 h-96 bg-iospink-200/35 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed top-1/3 right-10 w-96 h-96 bg-saffron-200/35 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed bottom-10 left-1/3 w-96 h-96 bg-iosgreen-200/35 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+    <!-- Main Container (iOS Width Standard) -->
+    <div class="max-w-xl mx-auto w-full">
+
+        <!-- iOS Top Bar Navigation -->
+        <header class="ios-blur sticky top-2 z-30 mb-4 px-4 py-2.5 rounded-2xl border border-white/70 shadow-ios flex items-center justify-between transition-all">
+            <a href="index.html" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition ios-press">
+                <i class="fas fa-chevron-left text-[11px] text-saffron-500"></i>
+                <span>Portal</span>
+            </a>
+
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-saffron-100/80 text-saffron-800 border border-saffron-200/60">
+                    <i class="fas fa-shield-virus text-[11px] text-saffron-600"></i> NVBDCP
+                </span>
+
+                <!-- Live Supabase Status Pill -->
+                <div id="statusBadge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200/70">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    <span id="statusText">Checking...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Form Card (iOS Rounded Inset) -->
+        <main class="ios-card rounded-[28px] shadow-ios-card p-5 sm:p-7 space-y-6">
+
+            <!-- Title & Subtitle Header -->
+            <div class="text-center pt-1 pb-2">
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-saffron-100 via-iospink-100 to-iosgreen-100 shadow-inner mb-3 border border-white">
+                    <i class="fas fa-file-waveform text-2xl text-saffron-600"></i>
+                </div>
+                <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+                    Fortnight Report on Malaria
+                </h1>
+                <p class="text-xs sm:text-sm font-medium text-slate-500 mt-1 flex items-center justify-center gap-1.5">
+                    <span class="inline-block w-2 h-2 rounded-full bg-saffron-400"></span>
+                    <span>Namkhana Block &bull; Diamond Harbour HD</span>
+                </p>
+            </div>
+
+            <!-- The Form -->
+            <form id="malariaForm" class="space-y-6" novalidate>
+
+                <!-- ==========================================
+                     SECTION 1: Period & Facility (Light Saffron Theme)
+                     ========================================== -->
+                <section class="bg-gradient-to-b from-saffron-50/70 to-white/70 rounded-2xl p-4 sm:p-5 border border-saffron-100 shadow-2xs space-y-4">
+                    <div class="flex items-center justify-between pb-1 border-b border-saffron-100/80">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-saffron-200/80 text-saffron-800 inline-flex items-center justify-center text-[11px] font-bold">
+                                1
+                            </span>
+                            <h2 class="text-xs font-bold text-saffron-900 uppercase tracking-wider">
+                                Period & Facility
+                            </h2>
+                        </div>
+                        <span class="text-[10px] font-medium text-saffron-600 bg-saffron-100/70 px-2 py-0.5 rounded-full">
+                            General Info
+                        </span>
+                    </div>
+
+                    <!-- iOS Segmented Control for Quick Fortnights -->
+                    <div>
+                        <div class="text-[11px] font-semibold text-slate-600 mb-1.5 flex items-center justify-between">
+                            <span><i class="fas fa-sparkles text-saffron-500 mr-1"></i> Quick Period Preset:</span>
+                            <span class="text-[10px] text-slate-400">1-click auto-fill</span>
+                        </div>
+                        <div class="bg-slate-200/50 p-1 rounded-xl grid grid-cols-3 gap-1 text-center">
+                            <button type="button" id="btn1stFortnight"
+                                class="py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-700 bg-white shadow-2xs hover:text-saffron-700 hover:bg-white/90 transition ios-press">
+                                1st FN (1-15th)
+                            </button>
+                            <button type="button" id="btn2ndFortnight"
+                                class="py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-700 bg-white shadow-2xs hover:text-saffron-700 hover:bg-white/90 transition ios-press">
+                                2nd FN (16-End)
+                            </button>
+                            <button type="button" id="btnPrevFortnight"
+                                class="py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-700 bg-white shadow-2xs hover:text-saffron-700 hover:bg-white/90 transition ios-press">
+                                Previous FN
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Date Range Inputs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label for="from" class="block text-xs font-semibold text-slate-700 mb-1">
+                                From Date <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="date" id="from" name="from" required
+                                class="ios-input w-full text-slate-800 text-sm rounded-xl p-2.5">
+                        </div>
+
+                        <div>
+                            <label for="to" class="block text-xs font-semibold text-slate-700 mb-1">
+                                To Date <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="date" id="to" name="to" required
+                                class="ios-input w-full text-slate-800 text-sm rounded-xl p-2.5">
+                        </div>
+                    </div>
+
+                    <!-- Auto-Generated Fortnight String -->
+                    <div>
+                        <label for="fort" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center justify-between">
+                            <span>Fortnight Range</span>
+                            <span class="text-[10px] text-saffron-700 font-semibold bg-saffron-100/60 px-2 py-0.5 rounded-full">
+                                Auto-Generated
+                            </span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="fort" name="fort" readonly placeholder="Select dates above to populate..."
+                                class="w-full bg-saffron-50/70 border border-saffron-200/70 text-saffron-950 font-bold text-sm rounded-xl p-2.5 pr-9 focus:outline-none cursor-not-allowed">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-saffron-500">
+                                <i class="fas fa-lock text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Facility Type and Cascading Name -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div>
+                            <label for="type" class="block text-xs font-semibold text-slate-700 mb-1">
+                                Facility Type <span class="text-rose-500">*</span>
+                            </label>
+                            <select name="type" id="type" required
+                                class="ios-input w-full text-slate-800 text-sm rounded-xl p-2.5 pr-8 font-medium">
+                                <option value="">-- Choose Type --</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="facility" class="block text-xs font-semibold text-slate-700 mb-1">
+                                Facility Name <span class="text-rose-500">*</span>
+                            </label>
+                            <select name="facility" id="facility" required
+                                class="ios-input w-full text-slate-800 text-sm rounded-xl p-2.5 pr-8 font-medium">
+                                <option value="">-- Select Type First --</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     SECTION 2: Fever & RDT (Light Green Theme)
+                     ========================================== -->
+                <section class="bg-gradient-to-b from-iosgreen-50/70 to-white/70 rounded-2xl p-4 sm:p-5 border border-iosgreen-100 shadow-2xs space-y-4">
+                    <div class="flex items-center justify-between pb-1 border-b border-iosgreen-100/80">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-iosgreen-200/80 text-iosgreen-800 inline-flex items-center justify-center text-[11px] font-bold">
+                                2
+                            </span>
+                            <h2 class="text-xs font-bold text-iosgreen-900 uppercase tracking-wider">
+                                Fever Patients & RDT
+                            </h2>
+                        </div>
+                        <span class="text-[10px] font-medium text-iosgreen-700 bg-iosgreen-100/70 px-2 py-0.5 rounded-full">
+                            Surveillance
+                        </span>
+                    </div>
+
+                    <!-- Fever Patient -->
+                    <div>
+                        <label for="fever" class="block text-xs font-semibold text-slate-700 mb-1">
+                            Fever Patients Examined <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="number" id="fever" name="fever" min="0" placeholder="0" required
+                                class="ios-input w-full text-slate-900 text-base font-bold rounded-xl p-2.5 pr-10">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <i class="fas fa-users text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active, Passive, Total RDT Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <div>
+                            <label for="activeRDT" class="block text-xs font-medium text-slate-600 mb-1">
+                                Active RDT (Field) <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="number" id="activeRDT" name="activeRDT" min="0" placeholder="0" required
+                                class="ios-input w-full text-slate-800 text-sm font-semibold rounded-xl p-2.5">
+                        </div>
+
+                        <div>
+                            <label for="passiveRDT" class="block text-xs font-medium text-slate-600 mb-1">
+                                Passive RDT (OPD) <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="number" id="passiveRDT" name="passiveRDT" min="0" placeholder="0" required
+                                class="ios-input w-full text-slate-800 text-sm font-semibold rounded-xl p-2.5">
+                        </div>
+
+                        <div>
+                            <label for="totalRDT" class="block text-xs font-semibold text-iosgreen-800 mb-1">
+                                Total RDT Tests
+                            </label>
+                            <input type="number" id="totalRDT" name="totalRDT" readonly placeholder="0"
+                                class="w-full bg-iosgreen-100/70 border border-iosgreen-200 text-iosgreen-900 font-extrabold text-base rounded-xl p-2.5 cursor-not-allowed">
+                        </div>
+                    </div>
+
+                    <!-- Testing Rate (% RDT) and Stock -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <!-- % RDT Rate Card -->
+                        <div class="bg-white/80 rounded-xl p-3 border border-slate-200/80 flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label for="rdtpercent" class="text-xs font-semibold text-slate-700">
+                                    % RDT Tested
+                                </label>
+                                <span id="rateBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                                    No data
+                                </span>
+                            </div>
+                            <div class="relative w-full">
+                                <input type="number" id="rdtpercent" name="rdtpercent" readonly step="0.1" placeholder="0.0"
+                                    class="w-full bg-slate-50 border border-slate-200 font-extrabold text-base rounded-xl p-2 pr-8 text-slate-800 cursor-not-allowed">
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400 font-bold">%</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 mt-1">Target: &ge; 70% tested</p>
+                        </div>
+
+                        <!-- Stock In Hand Card -->
+                        <div class="bg-white/80 rounded-xl p-3 border border-slate-200/80 flex flex-col justify-between">
+                            <label for="stockRDT" class="block text-xs font-semibold text-slate-700 mb-1">
+                                RDT Kits in Stock <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="number" id="stockRDT" name="stockRDT" min="0" placeholder="0" required
+                                    class="ios-input w-full text-slate-800 text-base font-bold rounded-xl p-2 pr-8">
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400 text-xs">
+                                    <i class="fas fa-box-archive"></i>
+                                </div>
+                            </div>
+                            <p id="stockAlert" class="text-[10px] text-slate-400 mt-1">Available at fortnight close</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     SECTION 3: Positive Cases (Light Pink Theme)
+                     ========================================== -->
+                <section class="bg-gradient-to-b from-iospink-50/70 to-white/70 rounded-2xl p-4 sm:p-5 border border-iospink-100 shadow-2xs space-y-3.5">
+                    <div class="flex items-center justify-between pb-1 border-b border-iospink-100/80">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-iospink-200/80 text-iospink-800 inline-flex items-center justify-center text-[11px] font-bold">
+                                3
+                            </span>
+                            <h2 class="text-xs font-bold text-iospink-900 uppercase tracking-wider">
+                                RDT Positive Cases
+                            </h2>
+                        </div>
+                        <span class="text-[10px] font-medium text-iospink-700 bg-iospink-100/70 px-2 py-0.5 rounded-full">
+                            Diagnosis
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-white/80 rounded-xl p-3 border border-iospink-100">
+                            <label for="pv" class="block text-xs font-bold text-rose-800 mb-1 flex items-center justify-between">
+                                <span>P. vivax (Pv)</span>
+                                <span class="text-[10px] text-rose-400 font-normal">0 if none</span>
+                            </label>
+                            <input type="number" id="pv" name="pv" min="0" placeholder="0"
+                                class="ios-input w-full text-rose-950 font-bold text-base rounded-xl p-2.5">
+                        </div>
+
+                        <div class="bg-white/80 rounded-xl p-3 border border-iospink-100">
+                            <label for="pf" class="block text-xs font-bold text-red-800 mb-1 flex items-center justify-between">
+                                <span>P. falciparum (Pf)</span>
+                                <span class="text-[10px] text-red-400 font-normal">0 if none</span>
+                            </label>
+                            <input type="number" id="pf" name="pf" min="0" placeholder="0"
+                                class="ios-input w-full text-red-950 font-bold text-base rounded-xl p-2.5">
+                        </div>
+                    </div>
+
+                    <!-- Positive Alert Banner (Revealed when Pv or Pf > 0) -->
+                    <div id="positiveSummaryBadge" class="hidden p-3 rounded-xl bg-rose-100/80 border border-rose-200 text-xs font-semibold text-rose-900 flex items-start gap-2">
+                        <i class="fas fa-triangle-exclamation text-rose-600 mt-0.5"></i>
+                        <span id="positiveSummaryText">Positive case detected.</span>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     SECTION 4: Blood Slide Microscopy (Light Saffron Theme)
+                     ========================================== -->
+                <section class="bg-gradient-to-b from-saffron-50/60 to-white/70 rounded-2xl p-4 sm:p-5 border border-saffron-100 shadow-2xs space-y-3.5">
+                    <div class="flex items-center justify-between pb-1 border-b border-saffron-100/80">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-saffron-200/80 text-saffron-800 inline-flex items-center justify-center text-[11px] font-bold">
+                                4
+                            </span>
+                            <h2 class="text-xs font-bold text-saffron-900 uppercase tracking-wider">
+                                Blood Slide Collection (Microscopy)
+                            </h2>
+                        </div>
+                        <span class="text-[10px] font-medium text-saffron-700 bg-saffron-100/70 px-2 py-0.5 rounded-full">
+                            Slides
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <div>
+                            <label for="activeBS" class="block text-xs font-medium text-slate-600 mb-1">
+                                Active Collection
+                            </label>
+                            <input type="number" id="activeBS" name="activeBS" min="0" placeholder="0"
+                                class="ios-input w-full text-slate-800 text-sm font-semibold rounded-xl p-2.5">
+                        </div>
+
+                        <div>
+                            <label for="passiveBS" class="block text-xs font-medium text-slate-600 mb-1">
+                                Passive Collection
+                            </label>
+                            <input type="number" id="passiveBS" name="passiveBS" min="0" placeholder="0"
+                                class="ios-input w-full text-slate-800 text-sm font-semibold rounded-xl p-2.5">
+                        </div>
+
+                        <div>
+                            <label for="totalBS" class="block text-xs font-semibold text-saffron-900 mb-1">
+                                Total Collection
+                            </label>
+                            <input type="number" id="totalBS" name="totalBS" readonly placeholder="0"
+                                class="w-full bg-saffron-100/70 border border-saffron-200 text-saffron-950 font-extrabold text-base rounded-xl p-2.5 cursor-not-allowed">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     SECTION 5: Mass Survey & Remarks (Light Mint Theme)
+                     ========================================== -->
+                <section class="bg-gradient-to-b from-iosgreen-50/60 to-white/70 rounded-2xl p-4 sm:p-5 border border-iosgreen-100 shadow-2xs space-y-3.5">
+                    <div class="flex items-center justify-between pb-1 border-b border-iosgreen-100/80">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-iosgreen-200/80 text-iosgreen-800 inline-flex items-center justify-center text-[11px] font-bold">
+                                5
+                            </span>
+                            <h2 class="text-xs font-bold text-iosgreen-900 uppercase tracking-wider">
+                                Mass Survey & Additional Notes
+                            </h2>
+                        </div>
+                        <span class="text-[10px] font-medium text-iosgreen-700 bg-iosgreen-100/70 px-2 py-0.5 rounded-full">
+                            Optional
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label for="mass" class="block text-xs font-semibold text-slate-700 mb-1">
+                                Mass Blood Slide Collected?
+                            </label>
+                            <select name="mass" id="mass"
+                                class="ios-input w-full text-slate-800 text-sm rounded-xl p-2.5 pr-8 font-medium">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="remarks" class="block text-xs font-semibold text-slate-700 mb-1">
+                                Remarks / Notes
+                            </label>
+                            <input type="text" id="remarks" name="remarks" placeholder="Optional comments..."
+                                class="ios-input w-full text-slate-800 text-sm rounded-xl p-2.5">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Submission CTA (Sleek iOS Gradient Button) -->
+                <div class="pt-2 space-y-2.5">
+                    <button type="submit" id="submitBtn"
+                        class="w-full py-3.5 px-6 rounded-2xl font-bold text-white bg-gradient-to-r from-saffron-500 via-amber-500 to-iosgreen-600 hover:from-saffron-600 hover:to-iosgreen-700 shadow-lg shadow-saffron-500/20 hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 text-base ios-press">
+                        <i id="btnIcon" class="fas fa-cloud-arrow-up text-sm"></i>
+                        <span id="btnText">Submit Malaria Report</span>
+                        <div id="btnSpinner" class="hidden w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    </button>
+
+                    <button type="button" id="resetBtn"
+                        class="w-full py-2 px-4 rounded-xl font-semibold text-xs text-slate-400 hover:text-slate-600 transition">
+                        Clear All Form Fields
+                    </button>
+                </div>
+            </form>
+
+            <!-- Card Footer -->
+            <footer class="pt-3 border-t border-slate-100 text-center text-xs text-slate-400 space-y-0.5">
+                <p>&copy; Developed by Arthita Roy, EA, Namkhana BPMU</p>
+                <p class="text-[10px] text-slate-400">Integrated with Supabase Cloud Database &bull; Diamond Harbour HD</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- ==========================================
+         iOS MODAL: SUCCESS
+         ========================================== -->
+    <div id="successModal" class="fixed inset-0 z-50 hidden bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="ios-card rounded-[32px] max-w-sm w-full p-6 text-center shadow-ios-float border border-white transform transition-all">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-iosgreen-100 to-emerald-200 text-iosgreen-700 mx-auto flex items-center justify-center text-2xl mb-4 shadow-sm">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-1">Report Submitted!</h3>
+            <p class="text-xs text-slate-500 mb-4">Your malaria surveillance report has been stored in Supabase.</p>
+
+            <div id="modalSummary" class="bg-slate-50/80 rounded-2xl p-3.5 text-left text-xs text-slate-700 mb-5 border border-slate-200/60 space-y-1.5">
+                <!-- Summary Injected via JS -->
+            </div>
+
+            <div>
+                <button type="button" id="modalOkBtn"
+                    class="w-full py-3 px-4 rounded-2xl font-bold text-sm bg-gradient-to-r from-saffron-500 via-amber-500 to-iosgreen-600 hover:from-saffron-600 hover:to-iosgreen-700 text-white shadow-md hover:shadow-lg transition-all duration-150 ios-press flex items-center justify-center gap-2">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Okay</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         iOS MODAL: ERROR / NOTICE
+         ========================================== -->
+    <div id="errorModal" class="fixed inset-0 z-50 hidden bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="ios-card rounded-[32px] max-w-sm w-full p-6 text-center shadow-ios-float border border-white">
+            <div class="w-16 h-16 rounded-full bg-rose-100 text-rose-600 mx-auto flex items-center justify-center text-2xl mb-4 shadow-sm">
+                <i class="fas fa-circle-exclamation"></i>
+            </div>
+            <h3 id="errorModalTitle" class="text-lg font-bold text-slate-900 mb-1">Submission Notice</h3>
+            <p id="errorModalDesc" class="text-xs text-slate-600 mb-4 text-left leading-relaxed">An error occurred.</p>
+
+            <div id="sqlSnippetBox" class="hidden text-left bg-slate-900 text-emerald-400 p-3 rounded-xl text-[11px] font-mono mb-4 overflow-x-auto max-h-32">
+                <code>-- Table 'malaria' not found in Supabase.<br>Please run supabase_malaria.sql in your Supabase SQL Editor.</code>
+            </div>
+
+            <button type="button" id="errorModalCloseBtn" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-800 hover:bg-slate-900 text-white transition shadow-sm ios-press">
+                Dismiss
+            </button>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         iOS MODAL: DUPLICATE RECORD CONFIRMATION
+         ========================================== -->
+    <div id="duplicateModal" class="fixed inset-0 z-50 hidden bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="ios-card rounded-[32px] max-w-sm w-full p-6 text-center shadow-ios-float border border-white">
+            <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-700 mx-auto flex items-center justify-center text-2xl mb-4 shadow-sm">
+                <i class="fas fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-1">Duplicate Entry</h3>
+            <p id="duplicateModalDesc" class="text-xs text-slate-600 mb-5 text-left leading-relaxed">
+                A report for this facility and fortnight already exists in Supabase. Do you wish to submit another record?
+            </p>
+
+            <div class="grid grid-cols-2 gap-2.5">
+                <button type="button" id="dupCancelBtn" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 transition ios-press">
+                    Cancel
+                </button>
+                <button type="button" id="dupProceedBtn" class="w-full py-2.5 rounded-xl font-bold text-xs bg-amber-600 hover:bg-amber-700 text-white transition shadow-sm ios-press">
+                    Submit Anyway
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC
+         ========================================== -->
+    <script>
+        // 1. SUPABASE CLIENT CONFIGURATION
+        const SUPABASE_URL = 'https://kijqcmumynutyhodxjwo.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_3vIQeWE4irMp3ni9vSw7fg_2sgzjurY';
+        const GOOGLE_SCRIPT_BACKUP_URL = "https://script.google.com/macros/s/AKfycbx_LrziISyFSwk7S4hnn4ShhaugadUNfHovSxWk0ENd-ugm3VA5IYA2jWNaDRKy3mJT/exec";
+
+        let supabaseClient = null;
+        if (window.supabase) {
+            try {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            } catch (err) {
+                console.error("Supabase client init failed:", err);
+            }
+        }
+
+        // DOM Element References
+        const statusBadge = document.getElementById('statusBadge');
+        const statusText = document.getElementById('statusText');
+
+        const fromInput = document.getElementById('from');
+        const toInput = document.getElementById('to');
+        const fortInput = document.getElementById('fort');
+
+        const typeSelect = document.getElementById('type');
+        const facilitySelect = document.getElementById('facility');
+
+        const feverInput = document.getElementById('fever');
+        const activeRDTInput = document.getElementById('activeRDT');
+        const passiveRDTInput = document.getElementById('passiveRDT');
+        const totalRDTInput = document.getElementById('totalRDT');
+        const rdtPercentInput = document.getElementById('rdtpercent');
+        const rateBadge = document.getElementById('rateBadge');
+        const stockRDTInput = document.getElementById('stockRDT');
+        const stockAlert = document.getElementById('stockAlert');
+
+        const pvInput = document.getElementById('pv');
+        const pfInput = document.getElementById('pf');
+        const positiveSummaryBadge = document.getElementById('positiveSummaryBadge');
+        const positiveSummaryText = document.getElementById('positiveSummaryText');
+
+        const activeBSInput = document.getElementById('activeBS');
+        const passiveBSInput = document.getElementById('passiveBS');
+        const totalBSInput = document.getElementById('totalBS');
+
+        const massSelect = document.getElementById('mass');
+        const remarksInput = document.getElementById('remarks');
+
+        const malariaForm = document.getElementById('malariaForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Modals
+        const successModal = document.getElementById('successModal');
+        const modalSummary = document.getElementById('modalSummary');
+        const modalOkBtn = document.getElementById('modalOkBtn');
+
+        const errorModal = document.getElementById('errorModal');
+        const errorModalTitle = document.getElementById('errorModalTitle');
+        const errorModalDesc = document.getElementById('errorModalDesc');
+        const errorModalCloseBtn = document.getElementById('errorModalCloseBtn');
+        const sqlSnippetBox = document.getElementById('sqlSnippetBox');
+
+        const duplicateModal = document.getElementById('duplicateModal');
+        const duplicateModalDesc = document.getElementById('duplicateModalDesc');
+        const dupCancelBtn = document.getElementById('dupCancelBtn');
+        const dupProceedBtn = document.getElementById('dupProceedBtn');
+
+        // Preserved Facility Master Data for Namkhana Block
+        const facilityData = {
+            CHC: ['Dwariknagar RH'],
+            PHC: ['Narayanpur PHC', 'Maharajganj PHC', 'Freserganj PHC', 'Bagdanga Moushuni PHC'],
+            SC: [
+                "Amarabati", "Bagdanga", "Baliara New", "Baliara Old", "Bijoybati",
+                "Bishalaxmipur", "Budhakhali", "Dakshin Chandanpiri", "Dakshin Chandranagar",
+                "Dakshin Durgapur", "Dakshin Shibrampur", "Debnagar", "Debnibas",
+                "Dwariknagar", "Fatikpur", "Ganeshnagar East", "Ganeshnagar West",
+                "Haripur", "Iswaripur", "Kusumtala", "Maharajganj",
+                "Moushuni 1st Gheri", "Namkhana I", "Namkhana II", "Nandabhanga",
+                "Narayanpur PHC SC", "Narayanpur Part", "Patibunia", "Radhanagar",
+                "Rajnagar", "Rajnagar Srinathgram I", "Rajnagar Srinathgram II",
+                "Shibnagar Abad I", "Shibnagar Abad II", "Shibpur",
+                "Uttar Chandanpiri", "Uttar Shibrampur"
+            ]
+        };
+
+        // 2. CHECK SUPABASE CONNECTION
+        async function checkSupabaseConnection() {
+            if (!supabaseClient) {
+                updateStatusBadge('offline', 'SDK Missing');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('malaria')
+                    .select('id')
+                    .limit(1);
+
+                if (error) {
+                    if (error.code === '42P01' || error.message.includes('relation "public.malaria" does not exist') || error.message.includes('not found')) {
+                        updateStatusBadge('warning', 'Run SQL Schema');
+                    } else {
+                        updateStatusBadge('warning', 'Connected');
+                    }
+                } else {
+                    updateStatusBadge('online', 'Supabase Live');
+                }
+            } catch (err) {
+                console.warn("Connection test:", err);
+                updateStatusBadge('online', 'Ready');
+            }
+        }
+
+        function updateStatusBadge(status, text) {
+            statusBadge.className = "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold border";
+            if (status === 'online') {
+                statusBadge.classList.add("bg-iosgreen-50", "text-iosgreen-700", "border-iosgreen-200");
+                statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-iosgreen-500"></span><span>${text}</span>`;
+            } else if (status === 'warning') {
+                statusBadge.classList.add("bg-saffron-50", "text-saffron-700", "border-saffron-200");
+                statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-saffron-500 animate-pulse"></span><span>${text}</span>`;
+            } else {
+                statusBadge.classList.add("bg-rose-50", "text-rose-700", "border-rose-200");
+                statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span><span>${text}</span>`;
+            }
+        }
+
+        // 3. FACILITY DROPDOWNS
+        function initFacilityDropdowns() {
+            Object.keys(facilityData).forEach(type => {
+                const opt = document.createElement('option');
+                opt.value = type;
+                opt.textContent = `${type} (${type === 'CHC' ? 'Community Health Centre' : type === 'PHC' ? 'Primary Health Centre' : 'Sub-Centre'})`;
+                typeSelect.appendChild(opt);
+            });
+
+            typeSelect.addEventListener('change', function () {
+                const selectedType = this.value;
+                facilitySelect.innerHTML = '<option value="">-- Select Facility --</option>';
+
+                if (selectedType && facilityData[selectedType]) {
+                    facilityData[selectedType].forEach(fac => {
+                        const opt = document.createElement('option');
+                        opt.value = fac;
+                        opt.textContent = fac;
+                        facilitySelect.appendChild(opt);
+                    });
+                }
+            });
+        }
+
+        // 4. DATE AND FORTNIGHT COMPUTATION
+        function formatIsoToDMY(isoStr) {
+            if (!isoStr || typeof isoStr !== 'string') return '';
+            const parts = isoStr.split('-');
+            if (parts.length === 3 && parts[0].length === 4) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return '';
+        }
+
+        function updateFortnight() {
+            const d1 = fromInput.value;
+            const d2 = toInput.value;
+
+            if (!d1 && !d2) {
+                fortInput.value = "";
+                fortInput.classList.remove('text-rose-600', 'border-rose-300');
+                return;
+            }
+
+            if (d1 && !d2) {
+                const formatted1 = formatIsoToDMY(d1);
+                fortInput.value = formatted1 ? `${formatted1} To ...` : "";
+                fortInput.classList.remove('text-rose-600', 'border-rose-300');
+                return;
+            }
+
+            if (!d1 && d2) {
+                const formatted2 = formatIsoToDMY(d2);
+                fortInput.value = formatted2 ? `... To ${formatted2}` : "";
+                fortInput.classList.remove('text-rose-600', 'border-rose-300');
+                return;
+            }
+
+            if (d2 < d1) {
+                fortInput.value = "⚠️ 'To Date' cannot be before 'From Date'";
+                fortInput.classList.add('text-rose-600', 'border-rose-300');
+                return;
+            }
+
+            fortInput.classList.remove('text-rose-600', 'border-rose-300');
+            const f1 = formatIsoToDMY(d1);
+            const f2 = formatIsoToDMY(d2);
+            if (f1 && f2) {
+                fortInput.value = `${f1} To ${f2}`;
+            } else {
+                fortInput.value = "";
+            }
+        }
+
+        function handleFromDateInput() {
+            const fromVal = fromInput.value;
+            if (fromVal && fromVal.includes('-')) {
+                const parts = fromVal.split('-');
+                if (parts.length === 3 && parts[0].length === 4) {
+                    const year = parseInt(parts[0], 10);
+                    const month = parseInt(parts[1], 10);
+                    const day = parseInt(parts[2], 10);
+
+                    if (!toInput.value || toInput.value < fromVal) {
+                        const mm = String(month).padStart(2, '0');
+                        if (day <= 15) {
+                            toInput.value = `${year}-${mm}-15`;
+                        } else {
+                            const lastDay = new Date(year, month, 0).getDate();
+                            toInput.value = `${year}-${mm}-${String(lastDay).padStart(2, '0')}`;
+                        }
+                    }
+                }
+            }
+            updateFortnight();
+        }
+
+        fromInput.addEventListener('input', handleFromDateInput);
+        fromInput.addEventListener('change', handleFromDateInput);
+
+        toInput.addEventListener('input', updateFortnight);
+        toInput.addEventListener('change', updateFortnight);
+
+        function setDates(startDate, endDate) {
+            const pad = (n) => String(n).padStart(2, '0');
+            const toISO = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+            fromInput.value = toISO(startDate);
+            toInput.value = toISO(endDate);
+            updateFortnight();
+        }
+
+        document.getElementById('btn1stFortnight').addEventListener('click', () => {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), now.getMonth(), 1);
+            const end = new Date(now.getFullYear(), now.getMonth(), 15);
+            setDates(start, end);
+        });
+
+        document.getElementById('btn2ndFortnight').addEventListener('click', () => {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), now.getMonth(), 16);
+            const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            setDates(start, end);
+        });
+
+        document.getElementById('btnPrevFortnight').addEventListener('click', () => {
+            const now = new Date();
+            const currentDay = now.getDate();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+
+            if (currentDay > 15) {
+                const start = new Date(year, month, 1);
+                const end = new Date(year, month, 15);
+                setDates(start, end);
+            } else {
+                const prevMonthLastDate = new Date(year, month, 0);
+                const prevYear = prevMonthLastDate.getFullYear();
+                const prevMonth = prevMonthLastDate.getMonth();
+                const lastDay = prevMonthLastDate.getDate();
+
+                const start = new Date(prevYear, prevMonth, 16);
+                const end = new Date(prevYear, prevMonth, lastDay);
+                setDates(start, end);
+            }
+        });
+
+        // 5. LIVE CALCULATIONS & VALIDATION
+        function calculateRDT() {
+            const active = parseFloat(activeRDTInput.value) || 0;
+            const passive = parseFloat(passiveRDTInput.value) || 0;
+            const total = active + passive;
+            totalRDTInput.value = total;
+            calculatePercentage();
+            validatePositivesAgainstTotal();
+        }
+
+        activeRDTInput.addEventListener('input', calculateRDT);
+        passiveRDTInput.addEventListener('input', calculateRDT);
+
+        function calculateBloodSlide() {
+            const active = parseFloat(activeBSInput.value) || 0;
+            const passive = parseFloat(passiveBSInput.value) || 0;
+            totalBSInput.value = active + passive;
+        }
+
+        activeBSInput.addEventListener('input', calculateBloodSlide);
+        passiveBSInput.addEventListener('input', calculateBloodSlide);
+
+        function calculatePercentage() {
+            const total = parseFloat(totalRDTInput.value) || 0;
+            const fever = parseFloat(feverInput.value) || 0;
+
+            if (fever === 0) {
+                rdtPercentInput.value = "0.0";
+                rateBadge.textContent = "No Fever Cases";
+                rateBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200";
+                return;
+            }
+
+            const pct = (total / fever) * 100;
+            rdtPercentInput.value = pct.toFixed(1);
+
+            if (pct >= 70) {
+                rateBadge.textContent = "Target Met (≥ 70%)";
+                rateBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-iosgreen-100 text-iosgreen-800 border border-iosgreen-200";
+                rdtPercentInput.classList.remove('text-rose-600', 'bg-rose-50');
+                rdtPercentInput.classList.add('text-iosgreen-700', 'bg-iosgreen-50');
+            } else {
+                rateBadge.textContent = "Low Rate (< 70%)";
+                rateBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-saffron-100 text-saffron-800 border border-saffron-200";
+                rdtPercentInput.classList.remove('text-iosgreen-700', 'bg-iosgreen-50');
+                rdtPercentInput.classList.add('text-rose-600', 'bg-rose-50');
+            }
+        }
+
+        feverInput.addEventListener('input', () => {
+            calculatePercentage();
+            validatePositivesAgainstTotal();
+        });
+
+        function updatePositives() {
+            const pv = parseInt(pvInput.value, 10) || 0;
+            const pf = parseInt(pfInput.value, 10) || 0;
+            const totalPos = pv + pf;
+
+            if (totalPos > 0) {
+                positiveSummaryBadge.classList.remove('hidden');
+                positiveSummaryText.innerHTML = `<strong>${totalPos} Positive Case(s):</strong> Pv = ${pv}, Pf = ${pf}. Initiate treatment & surveillance protocol.`;
+            } else {
+                positiveSummaryBadge.classList.add('hidden');
+            }
+            validatePositivesAgainstTotal();
+        }
+
+        function validatePositivesAgainstTotal() {
+            const pv = parseInt(pvInput.value, 10) || 0;
+            const pf = parseInt(pfInput.value, 10) || 0;
+            const totalPos = pv + pf;
+            const totalRDT = parseInt(totalRDTInput.value, 10) || 0;
+
+            if (totalRDT > 0 && totalPos > totalRDT) {
+                positiveSummaryBadge.classList.remove('hidden');
+                positiveSummaryBadge.classList.add('bg-red-100', 'text-red-900', 'border-red-300');
+                positiveSummaryText.innerHTML = `❌ <strong>Data Error:</strong> Positives (${totalPos}) cannot exceed Total RDT tests (${totalRDT})!`;
+            }
+        }
+
+        pvInput.addEventListener('input', updatePositives);
+        pfInput.addEventListener('input', updatePositives);
+
+        stockRDTInput.addEventListener('input', function () {
+            const stock = parseInt(this.value, 10) || 0;
+            if (stock <= 5 && stock >= 0) {
+                stockAlert.innerHTML = `<span class="text-rose-600 font-bold"><i class="fas fa-triangle-exclamation"></i> Low stock (${stock} left)!</span>`;
+            } else {
+                stockAlert.innerHTML = `Available at fortnight close`;
+            }
+        });
+
+        // 6. FORM SUBMISSION HANDLER
+        malariaForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            if (!fromInput.value || !toInput.value) {
+                showError("Please specify both 'From Date' and 'To Date'.");
+                return;
+            }
+
+            if (new Date(toInput.value) < new Date(fromInput.value)) {
+                showError("'To Date' cannot be earlier than 'From Date'.");
+                return;
+            }
+
+            if (!typeSelect.value) {
+                showError("Please select a Facility Type.");
+                return;
+            }
+
+            if (!facilitySelect.value) {
+                showError("Please select a Health Facility.");
+                return;
+            }
+
+            const feverVal = parseInt(feverInput.value, 10);
+            if (isNaN(feverVal) || feverVal < 0) {
+                showError("Please enter a valid number for Fever Patients.");
+                return;
+            }
+
+            const totalRDTVal = parseInt(totalRDTInput.value, 10) || 0;
+            const pvVal = parseInt(pvInput.value, 10) || 0;
+            const pfVal = parseInt(pfInput.value, 10) || 0;
+
+            if (pvVal + pfVal > totalRDTVal && totalRDTVal > 0) {
+                showError(`Positive cases (${pvVal + pfVal}) cannot exceed Total RDT tests (${totalRDTVal}).`);
+                return;
+            }
+
+            const payload = {
+                from_date: fromInput.value,
+                to_date: toInput.value,
+                fortnight: fortInput.value,
+                facility_type: typeSelect.value,
+                facility: facilitySelect.value,
+                fever: feverVal,
+                active_rdt: parseInt(activeRDTInput.value, 10) || 0,
+                passive_rdt: parseInt(passiveRDTInput.value, 10) || 0,
+                total_rdt: totalRDTVal,
+                rdt_percentage: parseFloat(rdtPercentInput.value) || 0,
+                stock_rdt: parseInt(stockRDTInput.value, 10) || 0,
+                pv: pvVal,
+                pf: pfVal,
+                active_bs: parseInt(activeBSInput.value, 10) || 0,
+                passive_bs: parseInt(passiveBSInput.value, 10) || 0,
+                total_bs: parseInt(totalBSInput.value, 10) || 0,
+                mass: massSelect.value || 'no',
+                remarks: remarksInput.value.trim() || null
+            };
+
+            if (supabaseClient) {
+                try {
+                    const { data: existing, error: dupErr } = await supabaseClient
+                        .from('malaria')
+                        .select('id, created_at')
+                        .eq('facility', payload.facility)
+                        .eq('fortnight', payload.fortnight)
+                        .limit(1);
+
+                    if (!dupErr && existing && existing.length > 0) {
+                        promptDuplicateModal(payload);
+                        return;
+                    }
+                } catch (e) {
+                    console.warn("Duplicate check warning:", e);
+                }
+            }
+
+            await executeSubmission(payload);
+        });
+
+        let pendingPayload = null;
+        function promptDuplicateModal(payload) {
+            pendingPayload = payload;
+            duplicateModalDesc.innerHTML = `A record for <strong>${payload.facility}</strong> during <strong>${payload.fortnight}</strong> already exists in Supabase. Do you wish to submit an additional entry?`;
+            duplicateModal.classList.remove('hidden');
+        }
+
+        dupCancelBtn.addEventListener('click', () => {
+            duplicateModal.classList.add('hidden');
+            pendingPayload = null;
+        });
+
+        dupProceedBtn.addEventListener('click', async () => {
+            duplicateModal.classList.add('hidden');
+            if (pendingPayload) {
+                await executeSubmission(pendingPayload);
+                pendingPayload = null;
+            }
+        });
+
+        async function executeSubmission(payload) {
+            setSubmitLoading(true);
+
+            try {
+                if (!supabaseClient) {
+                    throw new Error("Supabase client is not loaded. Please verify your internet connection.");
+                }
+
+                const { data, error } = await supabaseClient
+                    .from('malaria')
+                    .insert([payload])
+                    .select();
+
+                if (error) {
+                    console.error("Supabase insert error:", error);
+                    if (error.code === '42P01' || error.message.includes('relation "public.malaria" does not exist') || error.message.includes('not found')) {
+                        showError("Table 'malaria' does not exist in Supabase yet. Please run supabase_malaria.sql in your Supabase SQL Editor.", true);
+                        return;
+                    }
+                    throw new Error(error.message || "Failed to insert record into Supabase");
+                }
+
+                dualSyncGoogleSheets(payload);
+                showSuccess(payload);
+
+            } catch (err) {
+                console.error("Submission failed:", err);
+                showError(err.message || "Submission failed! Please try again.");
+            } finally {
+                setSubmitLoading(false);
+            }
+        }
+
+        function dualSyncGoogleSheets(payload) {
+            try {
+                const formData = new FormData(malariaForm);
+                fetch(GOOGLE_SCRIPT_BACKUP_URL, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                }).catch(err => console.warn("Google Sheets backup sync warning:", err));
+            } catch (e) {
+                console.warn("Dual sync skipped:", e);
+            }
+        }
+
+        function setSubmitLoading(isLoading) {
+            if (isLoading) {
+                submitBtn.disabled = true;
+                btnSpinner.classList.remove('hidden');
+                btnIcon.classList.add('hidden');
+                btnText.textContent = "Submitting...";
+                submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+            } else {
+                submitBtn.disabled = false;
+                btnSpinner.classList.add('hidden');
+                btnIcon.classList.remove('hidden');
+                btnText.textContent = "Submit Malaria Report";
+                submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+            }
+        }
+
+        function showSuccess(data) {
+            modalSummary.innerHTML = `
+                <div><span class="font-medium text-slate-500">Facility:</span> <strong class="text-saffron-950">${data.facility} (${data.facility_type})</strong></div>
+                <div><span class="font-medium text-slate-500">Fortnight:</span> <strong class="text-slate-800">${data.fortnight}</strong></div>
+                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200 mt-2 text-[11px]">
+                    <div>Fever Cases: <strong>${data.fever}</strong></div>
+                    <div>Total RDT: <strong>${data.total_rdt}</strong> (${data.rdt_percentage}%)</div>
+                    <div>Positives: <strong class="${(data.pv + data.pf) > 0 ? 'text-rose-600' : 'text-slate-700'}">Pv=${data.pv}, Pf=${data.pf}</strong></div>
+                    <div>Blood Slides: <strong>${data.total_bs}</strong></div>
+                    <div>RDT Stock: <strong>${data.stock_rdt}</strong> kits</div>
+                    <div>Mass Survey: <strong>${data.mass.toUpperCase()}</strong></div>
+                </div>
+            `;
+            successModal.classList.remove('hidden');
+        }
+
+        function showError(msg, showSqlHint = false) {
+            errorModalTitle.textContent = "Submission Notice";
+            errorModalDesc.textContent = msg;
+            if (showSqlHint) {
+                sqlSnippetBox.classList.remove('hidden');
+            } else {
+                sqlSnippetBox.classList.add('hidden');
+            }
+            errorModal.classList.remove('hidden');
+        }
+
+        if (modalOkBtn) {
+            modalOkBtn.addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+        }
+
+        errorModalCloseBtn.addEventListener('click', () => {
+            errorModal.classList.add('hidden');
+        });
+
+        function resetForm() {
+            malariaForm.reset();
+            facilitySelect.innerHTML = '<option value="">-- Select Type First --</option>';
+            fortInput.value = "";
+            fortInput.classList.remove('text-rose-600', 'border-rose-300');
+            totalRDTInput.value = "";
+            totalBSInput.value = "";
+            rdtPercentInput.value = "";
+            rateBadge.textContent = "No data";
+            rateBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200";
+            positiveSummaryBadge.classList.add('hidden');
+            stockAlert.innerHTML = `Available at fortnight close`;
+        }
+
+        resetBtn.addEventListener('click', () => {
+            if (confirm("Are you sure you want to clear all form entries?")) {
+                resetForm();
+            }
+        });
+
+        // ==========================================
+        // 7. FLYING MOSQUITO ANIMATION ENGINE
+        // ==========================================
+        function initFlyingMosquitoes() {
+            const swarm = document.getElementById('mosquito-swarm');
+            if (!swarm) return;
+
+            const m1 = document.getElementById('mosquito-1');
+            const m2 = document.getElementById('mosquito-2');
+            if (!m1 || !m2) return;
+
+            const insects = [
+                {
+                    el: m1,
+                    x: Math.random() * (window.innerWidth - 60),
+                    y: Math.random() * (window.innerHeight - 60),
+                    tx: Math.random() * (window.innerWidth - 60),
+                    ty: Math.random() * (window.innerHeight - 60),
+                    vx: 0,
+                    vy: 0,
+                    angle: 0,
+                    speed: 3.8,
+                    pause: 0,
+                    scale: 1.0
+                },
+                {
+                    el: m2,
+                    x: Math.random() * (window.innerWidth - 60),
+                    y: Math.random() * (window.innerHeight - 60),
+                    tx: Math.random() * (window.innerWidth - 60),
+                    ty: Math.random() * (window.innerHeight - 60),
+                    vx: 0,
+                    vy: 0,
+                    angle: 180,
+                    speed: 4.8,
+                    pause: 25,
+                    scale: 0.82
+                }
+            ];
+
+            function pickTarget() {
+                const pad = 40;
+                const w = Math.max(300, window.innerWidth - pad * 2);
+                const h = Math.max(300, window.innerHeight - pad * 2);
+                return {
+                    x: pad + Math.random() * w,
+                    y: pad + Math.random() * h
+                };
+            }
+
+            // Scatter away if mouse/touch gets too close
+            function onProximity(px, py) {
+                insects.forEach(ins => {
+                    const dx = ins.x - px;
+                    const dy = ins.y - py;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < 120) {
+                        const repelAngle = Math.atan2(dy, dx);
+                        ins.vx = Math.cos(repelAngle) * 12;
+                        ins.vy = Math.sin(repelAngle) * 12;
+                        const t = pickTarget();
+                        ins.tx = t.x;
+                        ins.ty = t.y;
+                        ins.pause = 0;
+                    }
+                });
+            }
+
+            window.addEventListener('mousemove', e => onProximity(e.clientX, e.clientY), { passive: true });
+            window.addEventListener('touchstart', e => {
+                if (e.touches && e.touches[0]) {
+                    onProximity(e.touches[0].clientX, e.touches[0].clientY);
+                }
+            }, { passive: true });
+
+            function animate() {
+                const now = Date.now() * 0.005;
+
+                insects.forEach((ins, i) => {
+                    const dx = ins.tx - ins.x;
+                    const dy = ins.ty - ins.y;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist < 30) {
+                        if (ins.pause > 0) {
+                            ins.pause--;
+                            ins.vx *= 0.82;
+                            ins.vy *= 0.82;
+                        } else {
+                            const nt = pickTarget();
+                            ins.tx = nt.x;
+                            ins.ty = nt.y;
+                            ins.speed = 3.2 + Math.random() * 3.6;
+                            ins.pause = Math.random() < 0.35 ? 30 : 0;
+                        }
+                    } else {
+                        const targetVx = (dx / dist) * ins.speed;
+                        const targetVy = (dy / dist) * ins.speed;
+                        ins.vx += (targetVx - ins.vx) * 0.08;
+                        ins.vy += (targetVy - ins.vy) * 0.08;
+                    }
+
+                    // Natural buzzing erratic motion
+                    const jitterX = Math.sin(now * 3 + i * 5) * 1.6;
+                    const jitterY = Math.cos(now * 3.4 + i * 4) * 1.6;
+
+                    ins.x += ins.vx + jitterX;
+                    ins.y += ins.vy + jitterY;
+
+                    // Keep within viewport bounds
+                    const maxX = window.innerWidth - 45;
+                    const maxY = window.innerHeight - 45;
+                    if (ins.x < 10) { ins.x = 10; ins.vx *= -1; }
+                    if (ins.x > maxX) { ins.x = maxX; ins.vx *= -1; }
+                    if (ins.y < 10) { ins.y = 10; ins.vy *= -1; }
+                    if (ins.y > maxY) { ins.y = maxY; ins.vy *= -1; }
+
+                    // Smooth head-forward rotation
+                    const moveAngle = Math.atan2(ins.vy, ins.vx) * (180 / Math.PI);
+                    let delta = moveAngle - ins.angle;
+                    while (delta < -180) delta += 360;
+                    while (delta > 180) delta -= 360;
+                    ins.angle += delta * 0.14;
+
+                    ins.el.style.transform = `translate3d(${ins.x}px, ${ins.y}px, 0) rotate(${ins.angle}deg) scale(${ins.scale})`;
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // ==========================================
+        // 8. INITIALIZE ON LOAD
+        // ==========================================
+        function initApp() {
+            initFacilityDropdowns();
+            updateFortnight();
+            checkSupabaseConnection();
+            initFlyingMosquitoes();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+    </script>
+</body>
+
+</html>
